@@ -31,6 +31,7 @@ import org.uberfire.mvp.impl.DefaultPlaceRequest;
 import org.uberfire.workbench.model.menu.Menus;
 import org.wirez.client.workbench.perspectives.AuthoringPerspective;
 import org.wirez.client.workbench.perspectives.HomePerspective;
+import org.wirez.client.workbench.perspectives.TestsPerspective;
 import org.wirez.client.workbench.perspectives.WirezSandboxPerspective;
 
 import javax.inject.Inject;
@@ -91,6 +92,7 @@ public class ShowcaseEntryPoint {
                 newTopLevelMenu( "Home" ).respondsWith( () -> placeManager.goTo( new DefaultPlaceRequest( HomePerspective.PERSPECTIVE_ID ) ) ).endMenu()
                         .newTopLevelMenu( "Authoring" ).respondsWith( () -> placeManager.goTo( new DefaultPlaceRequest( AuthoringPerspective.PERSPECTIVE_ID ) ) ).endMenu()
                         .newTopLevelMenu( "Sandbox" ).respondsWith( () -> placeManager.goTo( new DefaultPlaceRequest( WirezSandboxPerspective.PERSPECTIVE_ID ) ) ).endMenu()
+                        .newTopLevelMenu( "Tests" ).respondsWith( () -> placeManager.goTo( new DefaultPlaceRequest( TestsPerspective.PERSPECTIVE_ID ) ) ).endMenu()
                         .build();
         menubar.addMenus( menus );
     }

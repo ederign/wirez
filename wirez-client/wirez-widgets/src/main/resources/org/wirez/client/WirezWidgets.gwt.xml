@@ -20,6 +20,7 @@
 <module>
 
 	<inherits name='com.google.gwt.user.User' />
+	<inherits name="org.jboss.errai.ui.UI" />
 	<inherits name="org.gwtbootstrap3.extras.notify.Notify"/>
 	<inherits name="org.wirez.client.WirezLienzo"/>
 
