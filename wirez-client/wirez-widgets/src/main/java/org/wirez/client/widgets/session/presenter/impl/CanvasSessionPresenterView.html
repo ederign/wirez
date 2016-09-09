@@ -1,0 +1,83 @@
+<div class="container-fluid" style="background-color: #e6e6e6;">
+
+    <div id="loadingPanel" style="width: 100%; position: absolute; margin: 5px;">
+        <span class="label label-danger">Loading...</span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <!-- TODO: horizontalAlignment="ALIGN_CENTER" -->
+            <div id="toolbarPanel" style=" width: 100%; margin: 5px;"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div id="canvasPanel" style="width: 100%;"/>
+        </div>
+    </div>
+
+</div>
+
+
+<!--
+
+TODOs:
+******
+    - CSS binding? css file?
+
+
+
+
+
+ <ui:style>
+    .mainPanel {
+      background-color: #e6e6e6;
+    }
+    .loadingPanel {
+      width: 100%;
+      position: absolute;
+      margin: 5px;
+    }
+    .toolbarPanel {
+      margin: 5px;
+    }
+  </ui:style>
+
+
+  <b:Container fluid="true"
+               addStyleNames="{style.mainPanel}">
+
+    <g:FlowPanel ui:field="loadingPanel" addStyleNames="{style.loadingPanel}">
+
+      <b:Label text="Loading..." type="DANGER"/>
+
+    </g:FlowPanel>
+
+    <b:Row>
+
+      <b:Column size="MD_12">
+
+        <g:HorizontalPanel ui:field="toolbarPanel"
+                           width="100%"
+                           horizontalAlignment="ALIGN_CENTER"
+                           addStyleNames="{style.toolbarPanel}"/>
+
+      </b:Column>
+
+    </b:Row>
+
+    <b:Row>
+
+      <b:Column size="MD_12">
+
+        <g:FlowPanel ui:field="canvasPanel"
+                     width="100%"/>
+
+      </b:Column>
+
+    </b:Row>
+
+  </b:Container>
+
+-->

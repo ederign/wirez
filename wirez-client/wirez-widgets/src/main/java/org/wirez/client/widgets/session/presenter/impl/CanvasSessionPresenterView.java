@@ -1,35 +1,33 @@
 package org.wirez.client.widgets.session.presenter.impl;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
-import com.google.gwt.user.client.ui.*;
-import org.gwtbootstrap3.client.ui.Row;
+import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.IsWidget;
+import org.gwtbootstrap3.client.ui.gwt.FlowPanel;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.wirez.client.widgets.session.presenter.CanvasSessionPresenter;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 @Dependent
-public class CanvasSessionPresenterView extends Composite implements CanvasSessionPresenter.View {
+@Templated
+public class CanvasSessionPresenterView
+        extends Composite
+        implements CanvasSessionPresenter.View {
 
-    interface ViewBinder extends UiBinder<Widget, CanvasSessionPresenterView> {
+    @Inject
+    @DataField
+    private FlowPanel loadingPanel;
 
-    }
 
-    private static ViewBinder uiBinder = GWT.create( ViewBinder.class );
+    @Inject
+    @DataField
+    private FlowPanel toolbarPanel;
 
-    @UiField
-    FlowPanel loadingPanel;
-
-    @UiField
-    HorizontalPanel toolbarPanel;
-    
-    @UiField
-    FlowPanel canvasPanel;
-    
-    public CanvasSessionPresenterView() {
-        initWidget( uiBinder.createAndBindUi( this ) );
-    }
+    @Inject
+    @DataField
+    private FlowPanel canvasPanel;
 
     @Override
     public CanvasSessionPresenter.View setToolbar(final IsWidget widget) {
