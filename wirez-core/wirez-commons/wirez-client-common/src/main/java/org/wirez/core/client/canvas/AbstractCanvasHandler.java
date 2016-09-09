@@ -17,14 +17,16 @@
 package org.wirez.core.client.canvas;
 
 import com.google.gwt.logging.client.LogConfiguration;
-import org.wirez.core.client.api.ClientDefinitionManager;
 import org.wirez.core.client.ShapeManager;
+import org.wirez.core.client.api.ClientDefinitionManager;
 import org.wirez.core.client.canvas.event.registration.CanvasElementAddedEvent;
 import org.wirez.core.client.canvas.event.registration.CanvasElementRemovedEvent;
 import org.wirez.core.client.canvas.event.registration.CanvasElementUpdatedEvent;
 import org.wirez.core.client.canvas.event.registration.CanvasElementsClearEvent;
 import org.wirez.core.client.canvas.listener.CanvasElementListener;
 import org.wirez.core.client.canvas.listener.HasCanvasListeners;
+import org.wirez.core.client.canvas.util.CanvasLayoutUtils;
+import org.wirez.core.client.command.factory.CanvasCommandFactory;
 import org.wirez.core.client.service.ClientFactoryServices;
 import org.wirez.core.client.service.ClientRuntimeError;
 import org.wirez.core.client.service.ServiceCallback;
@@ -36,24 +38,19 @@ import org.wirez.core.client.shape.factory.ShapeFactory;
 import org.wirez.core.client.shape.view.ShapeView;
 import org.wirez.core.client.shape.view.animation.AnimationTweener;
 import org.wirez.core.client.shape.view.animation.HasAnimations;
-import org.wirez.core.client.util.ShapeUtils;
 import org.wirez.core.diagram.Diagram;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Element;
 import org.wirez.core.graph.Graph;
 import org.wirez.core.graph.Node;
-import org.wirez.core.graph.content.definition.DefinitionSet;
-import org.wirez.core.graph.content.relationship.Child;
-import org.wirez.core.graph.content.relationship.Dock;
 import org.wirez.core.graph.content.Bounds;
+import org.wirez.core.graph.content.definition.DefinitionSet;
 import org.wirez.core.graph.content.view.BoundImpl;
 import org.wirez.core.graph.content.view.BoundsImpl;
 import org.wirez.core.graph.content.view.View;
 import org.wirez.core.graph.processing.index.IncrementalIndexBuilder;
 import org.wirez.core.graph.processing.index.Index;
 import org.wirez.core.graph.processing.index.IndexBuilder;
-import org.wirez.core.graph.processing.traverse.tree.AbstractTreeTraverseCallback;
-import org.wirez.core.graph.processing.traverse.tree.TreeWalkTraverseProcessor;
 import org.wirez.core.graph.util.GraphUtils;
 import org.wirez.core.rule.Rule;
 import org.wirez.core.rule.graph.GraphRulesManager;
@@ -75,12 +72,12 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
     protected GraphRulesManager rulesManager;
     protected GraphUtils graphUtils;
     protected IndexBuilder<Graph<?, Node>, Node, Edge, Index<Node, Edge>> indexBuilder;
-    protected TreeWalkTraverseProcessor treeWalkTraverseProcessor;
     protected ShapeManager shapeManager;
     protected Event<CanvasElementAddedEvent> canvasElementAddedEvent;
     protected Event<CanvasElementRemovedEvent> canvasElementRemovedEvent;
     protected Event<CanvasElementUpdatedEvent> canvasElementUpdatedEvent;
     protected Event<CanvasElementsClearEvent> canvasElementsClearEvent;
+    protected CanvasCommandFactory canvasCommandFactory;
 
     private final String uuid;
     protected C canvas;
@@ -94,23 +91,23 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
                                   final GraphRulesManager rulesManager,
                                   final GraphUtils graphUtils,
                                   final IncrementalIndexBuilder indexBuilder,
-                                  final TreeWalkTraverseProcessor treeWalkTraverseProcessor,
                                   final ShapeManager shapeManager,
                                   final Event<CanvasElementAddedEvent> canvasElementAddedEvent,
                                   final Event<CanvasElementRemovedEvent> canvasElementRemovedEvent,
                                   final Event<CanvasElementUpdatedEvent> canvasElementUpdatedEvent,
-                                  final Event<CanvasElementsClearEvent> canvasElementsClearEvent ) {
+                                  final Event<CanvasElementsClearEvent> canvasElementsClearEvent,
+                                  final CanvasCommandFactory canvasCommandFactory ) {
         this.clientDefinitionManager = clientDefinitionManager;
         this.clientFactoryServices = clientFactoryServices;
         this.rulesManager = rulesManager;
         this.graphUtils = graphUtils;
         this.indexBuilder = ( IndexBuilder<Graph<?, Node>, Node, Edge, Index<Node, Edge>> ) indexBuilder;
-        this.treeWalkTraverseProcessor = treeWalkTraverseProcessor;
         this.shapeManager = shapeManager;
         this.canvasElementAddedEvent = canvasElementAddedEvent;
         this.canvasElementRemovedEvent = canvasElementRemovedEvent;
         this.canvasElementUpdatedEvent = canvasElementUpdatedEvent;
         this.canvasElementsClearEvent = canvasElementsClearEvent;
+        this.canvasCommandFactory = canvasCommandFactory;
         this.uuid = UUID.uuid();
     }
 
@@ -164,7 +161,8 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
                     }
                 }
 
-                doDraw();
+                // Run the draw command.
+                canvasCommandFactory.DRAW().execute( AbstractCanvasHandler.this );
 
 
             }
@@ -177,16 +175,6 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
 
     }
 
-    protected void doDraw() {
-
-        // Build the shapes that represents the graph on canvas.
-        draw();
-
-        // Draw it.
-        canvas.draw();
-
-    }
-
     @Override
     public C getCanvas() {
         return canvas;
@@ -195,132 +183,6 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
     @Override
     public D getDiagram() {
         return diagram;
-    }
-
-    protected void draw() {
-
-        // Walk throw the graph and register the shapes.
-        treeWalkTraverseProcessor
-                .useEdgeVisitorPolicy( TreeWalkTraverseProcessor.EdgeVisitorPolicy.VISIT_EDGE_AFTER_TARGET_NODE )
-                .traverse( diagram.getGraph(), new AbstractTreeTraverseCallback<Graph, Node, Edge>() {
-                    @Override
-                    public void startGraphTraversal( final Graph graph ) {
-
-                    }
-
-                    @Override
-                    @SuppressWarnings( "unchecked" )
-                    public boolean startNodeTraversal( final Node node ) {
-
-                        if ( node.getContent() instanceof View ) {
-
-                            if ( !isCanvasRoot( node ) ) {
-
-                                final View viewContent = ( View ) node.getContent();
-                                final ShapeFactory factory =
-                                        shapeManager.getFactory( getDefinitionId( viewContent.getDefinition() ) );
-
-                                // Add the node shape into the canvas.
-                                register( factory, node );
-                                applyElementMutation( node, MutationContext.STATIC );
-
-                            }
-
-                            return true;
-
-                        }
-
-                        return false;
-                    }
-
-                    @Override
-                    @SuppressWarnings( "unchecked" )
-
-                    public boolean startEdgeTraversal( final Edge edge ) {
-
-                        final Object content = edge.getContent();
-
-                        if ( content instanceof View ) {
-
-                            final View viewContent = ( View ) edge.getContent();
-                            final ShapeFactory factory =
-                                    shapeManager.getFactory( getDefinitionId( viewContent.getDefinition() ) );
-
-                            // Add the edge shape into the canvas.
-                            register( factory, edge );
-                            applyElementMutation( edge, MutationContext.STATIC );
-                            ShapeUtils.applyConnections( edge, AbstractCanvasHandler.this, MutationContext.STATIC );
-                            return true;
-
-                        } else if ( content instanceof Child ) {
-
-                            final Node child = edge.getTargetNode();
-                            final Node parent = edge.getSourceNode();
-
-                            // If the child is docked, do not consider adding it as a child shape of the given parent here,
-                            // as docking lienzo wires implies that child shape is added as a child for the docked shape.
-                            // TODO: This logic is specific for lienzo wires, should not be here.
-                            if ( !isDocked( child ) ) {
-
-                                final Object childContent = child.getContent();
-                                if ( childContent instanceof View ) {
-                                    addChild( parent, child );
-                                    applyElementMutation( child, MutationContext.STATIC );
-                                }
-
-                            }
-
-                            return true;
-
-                        } else if ( content instanceof Dock ) {
-
-                            final Node docked = edge.getTargetNode();
-                            final Node parent = edge.getSourceNode();
-
-                            final Object dockedContent = docked.getContent();
-                            if ( dockedContent instanceof View ) {
-                                dock( parent, docked );
-                                applyElementMutation( docked, MutationContext.STATIC );
-                            }
-
-                            return true;
-                        }
-
-                        return false;
-
-                    }
-
-                    @Override
-                    public void endGraphTraversal() {
-                    }
-
-                } );
-
-    }
-
-    @SuppressWarnings( "unchecked" )
-    private boolean isDocked( final Node child ) {
-        if ( null != child ) {
-
-            List<Edge> edges = child.getInEdges();
-            if ( null != edges && !edges.isEmpty() ) {
-
-                for ( final Edge edge : edges ) {
-
-                    if ( isDockEdged( edge ) ) {
-                        return true;
-                    }
-                }
-
-            }
-
-        }
-
-        return false;
-    }
-
-    private boolean isDockEdged( final Edge edge ) {
-        return edge.getContent() instanceof Dock;
     }
 
     /*
@@ -488,13 +350,12 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
 
     }
 
-    protected boolean isCanvasRoot( final Element parent ) {
-        return null != parent && isCanvasRoot( parent.getUUID() );
+    private boolean isCanvasRoot( final Element parent ) {
+        return CanvasLayoutUtils.isCanvasRoot( getDiagram(), parent );
     }
 
-    protected boolean isCanvasRoot( final String pUUID ) {
-        final String canvasRoot = getDiagram().getSettings().getCanvasRootUUID();
-        return ( null != canvasRoot && null != pUUID && canvasRoot.equals( pUUID ) );
+    private boolean isCanvasRoot( final String pUUID ) {
+        return CanvasLayoutUtils.isCanvasRoot( getDiagram(), pUUID );
     }
 
     public void dock( final Element parent, final Element child ) {
@@ -612,7 +473,6 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
         rulesManager = null;
         graphUtils = null;
         indexBuilder = null;
-        treeWalkTraverseProcessor = null;
         shapeManager = null;
     }
 
@@ -723,10 +583,6 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
 
     public GraphUtils getGraphUtils() {
         return graphUtils;
-    }
-
-    public TreeWalkTraverseProcessor getTreeWalkTraverseProcessor() {
-        return treeWalkTraverseProcessor;
     }
 
     public Index<?, ?> getGraphIndex() {

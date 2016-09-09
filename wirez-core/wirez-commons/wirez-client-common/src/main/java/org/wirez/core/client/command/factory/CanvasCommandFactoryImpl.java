@@ -8,12 +8,25 @@ import org.wirez.core.graph.Element;
 import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.definition.Definition;
 import org.wirez.core.graph.content.view.View;
+import org.wirez.core.graph.processing.traverse.tree.TreeWalkTraverseProcessor;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 @ApplicationScoped
 public class CanvasCommandFactoryImpl implements CanvasCommandFactory {
-    
+
+    private TreeWalkTraverseProcessor treeWalkTraverseProcessor;
+
+    private CanvasCommandFactoryImpl() {
+        this.treeWalkTraverseProcessor = null;
+    }
+
+    @Inject
+    public CanvasCommandFactoryImpl( final TreeWalkTraverseProcessor treeWalkTraverseProcessor ) {
+        this.treeWalkTraverseProcessor = treeWalkTraverseProcessor;
+    }
+
     @Override
     public AddCanvasNodeCommand ADD_NODE(Node candidate, ShapeFactory factory) {
         return new AddCanvasNodeCommand(candidate, factory);
@@ -32,6 +45,11 @@ public class CanvasCommandFactoryImpl implements CanvasCommandFactory {
     @Override
     public DeleteCanvasEdgeCommand DELETE_EDGE(Edge candidate) {
         return new DeleteCanvasEdgeCommand(candidate);
+    }
+
+    @Override
+    public DrawCanvasCommand DRAW() {
+        return new DrawCanvasCommand( treeWalkTraverseProcessor );
     }
 
     @Override

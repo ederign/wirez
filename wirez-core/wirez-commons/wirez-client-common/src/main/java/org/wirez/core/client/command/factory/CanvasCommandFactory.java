@@ -11,10 +11,6 @@ import org.wirez.core.graph.content.view.View;
 
 public interface CanvasCommandFactory {
     
-    /* ******************************************************************************************
-                                    Atomic commands.
-       ****************************************************************************************** */
-    
     AddCanvasNodeCommand ADD_NODE(Node candidate, ShapeFactory factory);
     
     AddCanvasEdgeCommand ADD_EDGE(Node parent, Edge candidate, ShapeFactory factory);
@@ -22,7 +18,9 @@ public interface CanvasCommandFactory {
     DeleteCanvasNodeCommand DELETE_NODE(Node candidate);
     
     DeleteCanvasEdgeCommand DELETE_EDGE(Edge candidate);
-    
+
+    DrawCanvasCommand DRAW();
+
     ClearCanvasCommand CLEAR_CANVAS();
     
     AddCanvasChildEdgeCommand ADD_CHILD_EDGE(Node parent,

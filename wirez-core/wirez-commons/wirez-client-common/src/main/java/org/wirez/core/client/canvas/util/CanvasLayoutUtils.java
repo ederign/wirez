@@ -1,6 +1,7 @@
 package org.wirez.core.client.canvas.util;
 
 import org.wirez.core.client.canvas.CanvasHandler;
+import org.wirez.core.diagram.Diagram;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Element;
 import org.wirez.core.graph.Graph;
@@ -23,6 +24,17 @@ public class CanvasLayoutUtils {
 
     private static final int DISTANCE = 100;
     private static final float MARGIN = 0.2f;
+
+    public static boolean isCanvasRoot( final Diagram diagram,
+                                    final Element parent ) {
+        return null != parent && isCanvasRoot( diagram, parent.getUUID() );
+    }
+
+    public static boolean isCanvasRoot( final Diagram diagram,
+                                    final String pUUID ) {
+        final String canvasRoot = diagram.getSettings().getCanvasRootUUID();
+        return ( null != canvasRoot && null != pUUID && canvasRoot.equals( pUUID ) );
+    }
 
     public double[] getNextLayoutPosition( final CanvasHandler canvasHandler, final Element<View<?>> source ) {
 
