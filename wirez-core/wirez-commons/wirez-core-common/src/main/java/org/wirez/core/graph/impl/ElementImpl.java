@@ -70,6 +70,19 @@ public class ElementImpl<C> implements Element<C> {
         return ( Edge<C, Node> ) this;
     }
 
+    @Override
+    public boolean equals( final Object o ) {
+        if ( this == o ) {
+            return true;
+        }
+        if ( !( o instanceof ElementImpl ) ) {
+            return false;
+        }
+
+        ElementImpl that = ( ElementImpl ) o;
+
+        return uuid.equals( that.uuid );
+    }
 
     @Override
     public String toString() {
