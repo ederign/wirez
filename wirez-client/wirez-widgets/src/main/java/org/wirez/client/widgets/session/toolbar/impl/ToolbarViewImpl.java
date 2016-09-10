@@ -16,38 +16,34 @@
 
 package org.wirez.client.widgets.session.toolbar.impl;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.IsWidget;
-import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.ButtonGroup;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.wirez.client.widgets.session.toolbar.ToolbarView;
 import org.wirez.core.client.session.impl.DefaultCanvasFullSession;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+@Dependent
+@Templated
 public class ToolbarViewImpl extends Composite implements ToolbarView<DefaultCanvasFullSession> {
 
-    interface ViewBinder extends UiBinder<Widget, ToolbarViewImpl> {
-
-    }
-
-    private static ViewBinder uiBinder = GWT.create(ViewBinder.class);
-
-    @UiField
-    ButtonGroup mainGroup;
+    @Inject
+    @DataField
+    private ButtonGroup mainGroup;
 
     AbstractToolbar presenter;
 
     @Override
     public void init(final AbstractToolbar presenter) {
         this.presenter = presenter;
-        initWidget(uiBinder.createAndBindUi(this));
     }
 
     @Override
     public ToolbarView<DefaultCanvasFullSession> addItem(final IsWidget w) {
-        
         mainGroup.add( w );
         return this;
     }

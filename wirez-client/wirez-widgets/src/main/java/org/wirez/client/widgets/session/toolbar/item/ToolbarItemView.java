@@ -16,34 +16,43 @@
 
 package org.wirez.client.widgets.session.toolbar.item;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Style;
-import com.google.gwt.uibinder.client.UiBinder;
-import com.google.gwt.uibinder.client.UiField;
+import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Widget;
 import org.gwtbootstrap3.client.ui.Button;
 import org.gwtbootstrap3.client.ui.constants.IconType;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
+import org.jboss.errai.ui.shared.api.annotations.EventHandler;
+import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.uberfire.mvp.Command;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+// TODO: Multiple buttons with same id.
+
+@Dependent
+@Templated
 public class ToolbarItemView extends Composite implements ToolbarItem.View {
 
-    interface ViewBinder extends UiBinder<Widget, ToolbarItemView> {
-
-    }
-
-    private static ViewBinder uiBinder = GWT.create( ViewBinder.class );
-
-    @UiField
+    @Inject
+    @DataField
     Button button;
 
     AbstractToolbarItem presenter;
+    private Command command;
 
     @Override
     public void init(final AbstractToolbarItem presenter) {
         this.presenter = presenter;
-        initWidget( uiBinder.createAndBindUi( this ) );
-        button.getElement().getStyle().setMargin( 5, Style.Unit.PX );
+    }
+
+    @EventHandler( "button" )
+    public void onButtonClick( final ClickEvent clickEvent ) {
+
+        if ( null != command ) {
+            command.execute();
+        }
+
     }
 
     @Override
@@ -66,7 +75,7 @@ public class ToolbarItemView extends Composite implements ToolbarItem.View {
 
     @Override
     public ToolbarItem.View setClickHandler(final Command command) {
-        button.addClickHandler(clickEvent -> command.execute());
+        this.command = command;
         return this;
     }
 
