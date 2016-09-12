@@ -21,7 +21,7 @@ public abstract class AbstractShapeView<T> extends WiresShape
     
     protected abstract void doDestroy();
     
-    protected Shape<?> getShape() {
+    public Shape<?> getShape() {
         return getPath();
     }
     

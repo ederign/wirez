@@ -17,15 +17,14 @@
 package org.wirez.shapes.client;
 
 import org.wirez.core.client.shape.MutationContext;
-import org.wirez.core.client.shape.view.HasTitle;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.View;
 
-public abstract class AbstractBasicNamedShape<W, V extends org.wirez.shapes.client.view.BasicShapeView>
-    extends AbstractDynamicShape<W, V> {
+public abstract class BasicNamedShape<W, V extends org.wirez.shapes.client.view.BasicShapeView>
+    extends BasicDynShape<W, V> {
 
-    public AbstractBasicNamedShape(final V shapeView) {
+    public BasicNamedShape( final V shapeView) {
         super(shapeView);
     }
 
@@ -46,7 +45,7 @@ public abstract class AbstractBasicNamedShape<W, V extends org.wirez.shapes.clie
         return 1d;
     }
 
-    protected AbstractBasicNamedShape<W, V> _applyFont(final Node<View<W>, Edge> element, final MutationContext mutationContext) {
+    protected BasicNamedShape<W, V> _applyFont( final Node<View<W>, Edge> element, final MutationContext mutationContext) {
         
         final String family = getFontFamily( element );
         final String color = getFontColor( element );

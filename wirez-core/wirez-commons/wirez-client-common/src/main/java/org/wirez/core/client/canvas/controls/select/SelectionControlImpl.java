@@ -1,8 +1,6 @@
 package org.wirez.core.client.canvas.controls.select;
 
 import org.wirez.core.client.animation.AnimationFactory;
-import org.wirez.core.client.animation.ShapeAnimation;
-import org.wirez.core.client.animation.ShapeDeSelectionAnimation;
 import org.wirez.core.client.api.platform.Desktop;
 import org.wirez.core.client.canvas.event.selection.CanvasClearSelectionEvent;
 import org.wirez.core.client.canvas.event.selection.CanvasElementSelectedEvent;
@@ -12,7 +10,6 @@ import org.wirez.core.client.shape.view.ShapeView;
 import org.wirez.core.client.shape.view.event.MouseClickEvent;
 import org.wirez.core.client.shape.view.event.MouseClickHandler;
 import org.wirez.core.client.shape.view.event.ViewEventType;
-import org.wirez.core.client.util.ShapeStateUtils;
 import org.wirez.core.graph.Element;
 
 import javax.enterprise.context.Dependent;
@@ -25,10 +22,9 @@ public final class SelectionControlImpl extends AbstractSelectionControl {
 
     @Inject
     public SelectionControlImpl( final Event<CanvasElementSelectedEvent> elementSelectedEventEvent,
-                                 final Event<CanvasClearSelectionEvent> clearSelectionEventEvent,
-                                 final ShapeStateUtils shapeStateUtils ) {
+                                 final Event<CanvasClearSelectionEvent> clearSelectionEventEvent ) {
 
-        super( elementSelectedEventEvent, clearSelectionEventEvent, shapeStateUtils );
+        super( elementSelectedEventEvent, clearSelectionEventEvent );
 
     }
 

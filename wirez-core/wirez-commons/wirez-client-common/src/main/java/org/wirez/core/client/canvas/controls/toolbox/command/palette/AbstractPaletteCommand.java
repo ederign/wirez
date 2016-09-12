@@ -45,7 +45,6 @@ public abstract class AbstractPaletteCommand<I> extends AbstractToolboxCommand<I
     protected NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory;
     protected NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl;
     protected GraphBoundsIndexer graphBoundsIndexer;
-    protected AnimationFactory animationFactory;
 
     protected AbstractCanvasHandler canvasHandler;
     protected CanvasHighlight canvasHighlight;
@@ -54,7 +53,7 @@ public abstract class AbstractPaletteCommand<I> extends AbstractToolboxCommand<I
     protected String elementUUID;
 
     protected AbstractPaletteCommand() {
-        this( null, null, null, null, null, null, null, null, null, null );
+        this( null, null, null, null, null, null, null, null, null );
     }
 
     public AbstractPaletteCommand(final ClientFactoryServices clientFactoryServices,
@@ -65,7 +64,6 @@ public abstract class AbstractPaletteCommand<I> extends AbstractToolboxCommand<I
                                   final NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory,
                                   final NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl,
                                   final GraphBoundsIndexer graphBoundsIndexer,
-                                  final AnimationFactory animationFactory,
                                   final I icon) {
         this.clientFactoryServices = clientFactoryServices;
         this.commonLookups = commonLookups;
@@ -75,7 +73,6 @@ public abstract class AbstractPaletteCommand<I> extends AbstractToolboxCommand<I
         this.nodeDragProxyFactory = nodeDragProxyFactory;
         this.nodeBuilderControl = nodeBuilderControl;
         this.graphBoundsIndexer = graphBoundsIndexer;
-        this.animationFactory = animationFactory;
         this.icon = icon;
         this.paletteVisible = false;
     }
@@ -242,7 +239,6 @@ public abstract class AbstractPaletteCommand<I> extends AbstractToolboxCommand<I
         this.nodeDragProxyFactory = null;
         this.nodeBuilderControl = null;
         this.graphBoundsIndexer = null;
-        this.animationFactory = null;
 
     }
 

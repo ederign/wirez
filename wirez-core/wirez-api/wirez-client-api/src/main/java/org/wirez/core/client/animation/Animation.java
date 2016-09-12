@@ -14,15 +14,30 @@
  * limitations under the License.
  */
 
-package org.wirez.core.client.shape.view;
+package org.wirez.core.client.animation;
 
-import org.wirez.core.client.canvas.ShapeState;
+import org.wirez.core.client.canvas.Canvas;
 
-/**
- * A shape that its size depends on width and height properties present in the Definition.
- */
-public interface HasState {
+public interface Animation<S> {
     
-    void applyState( ShapeState shapeState );
+    interface AnimationCallback {
+
+        void onStart();
+
+        void onFrame();
+        
+        void onComplete();
+        
+    }
+
+    S getSource();
+    
+    Animation forCanvas( Canvas canvas );
+    
+    Animation setCallback( AnimationCallback callback );
+
+    Animation setDuration( long duration );
+    
+    void run();
     
 }

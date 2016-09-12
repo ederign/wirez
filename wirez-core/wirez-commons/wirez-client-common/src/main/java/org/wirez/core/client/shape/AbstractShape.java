@@ -16,15 +16,12 @@
 
 package org.wirez.core.client.shape;
 
+import org.wirez.core.client.shape.view.*;
+import org.wirez.core.client.util.ShapeUtils;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.View;
 import org.wirez.core.graph.util.GraphUtils;
-import org.wirez.core.client.shape.view.*;
-import org.wirez.core.client.shape.view.animation.AnimationProperties;
-import org.wirez.core.client.shape.view.animation.AnimationProperty;
-import org.wirez.core.client.shape.view.animation.HasAnimations;
-import org.wirez.core.client.util.ShapeUtils;
 
 import java.util.logging.Logger;
 
@@ -88,25 +85,8 @@ public abstract class AbstractShape<W, E extends Node<View<W>, Edge>, V extends 
         view.setShapeX(x);
         view.setShapeY(y);
         
-        // Do not apply animations on x/y attributes, does not makes much sense for now.
-        /*if ( isAnimationMutation(mutationContext) ) {
-            
-            addAnimationProperties( new AnimationProperties.X( x ), new AnimationProperties.Y( y ) );
-            
-        } else {
-
-            view.setShapeX(x);
-            view.setShapeY(y);
-            
-        }*/
-        
     }
     
-    protected void addAnimationProperties(final AnimationProperty<?>... property) {
-        final HasAnimations<?> hasAnimations = (HasAnimations<?>) view;
-        hasAnimations.addAnimationProperties( property );
-    }
-
     @Override
     public void applyProperties( final E element, final MutationContext mutationContext ) {
         
@@ -129,20 +109,15 @@ public abstract class AbstractShape<W, E extends Node<View<W>, Edge>, V extends 
         if (color != null && color.trim().length() > 0) {
             
             final boolean hasGradient = view instanceof HasFillGradient;
-            
-            // Fill gradient cannot be animated for now in lienzo.
-            if ( !hasGradient && isAnimationMutation(mutationContext) ) {
 
-                addAnimationProperties(new AnimationProperties.FILL_COLOR( color ));
-
-            } else if ( !hasGradient ) {
+            if ( !hasGradient ) {
 
                 view.setFillColor( color );
 
             } else {
 
                 ( (HasFillGradient) view).setFillGradient(HasFillGradient.Type.LINEAR, color, "#FFFFFF");
-                
+
             }
             
         }
@@ -173,7 +148,6 @@ public abstract class AbstractShape<W, E extends Node<View<W>, Edge>, V extends 
                                final MutationContext mutationContext ) {
         if ( view instanceof HasTitle ) {
             final HasTitle hasTitle = ( HasTitle ) view;
-            final boolean isAnimation = isAnimationMutation( mutationContext );
 
             if ( family != null && family.trim().length() > 0 ) {
                 hasTitle.setTitleFontFamily( family );
@@ -188,15 +162,8 @@ public abstract class AbstractShape<W, E extends Node<View<W>, Edge>, V extends 
 
             }
 
-            if ( isAnimation ) {
+            _applyFontAlpha( hasTitle, alpha, mutationContext );
 
-                addAnimationProperties( new AnimationProperties.FONT_ALPHA( alpha ) );
-
-            } else {
-
-                hasTitle.setTitleAlpha( alpha );
-
-            }
 
             if ( borderSize != null && borderSize > 0 ) {
                 hasTitle.setTitleStrokeWidth( borderSize );
@@ -208,33 +175,26 @@ public abstract class AbstractShape<W, E extends Node<View<W>, Edge>, V extends 
         }
     }
 
+    protected void _applyFontAlpha( final HasTitle hasTitle,
+                                    final double alpha,
+                                    final MutationContext mutationContext ) {
+
+        hasTitle.setTitleAlpha( alpha );
+
+    }
+
     protected void applySize(final HasSize hasSize, final double width, final double height, final MutationContext mutationContext) {
 
-        if ( isAnimationMutation(mutationContext) ) {
+        hasSize.setSize(width, height);
 
-            addAnimationProperties( new AnimationProperties.WIDTH( width ), new AnimationProperties.HEIGHT( height ) );
-
-        } else {
-
-            hasSize.setSize(width, height);
-
-        }
     }
 
     protected void applyRadius(final HasRadius hasRadius, final double radius, final MutationContext mutationContext) {
         
         if (radius > 0) {
 
-            if ( isAnimationMutation(mutationContext) ) {
+            hasRadius.setRadius(radius);
 
-                addAnimationProperties(new AnimationProperties.RADIUS( radius ));
-
-            } else {
-
-                hasRadius.setRadius(radius);
-
-            }
-            
         }
         
     }

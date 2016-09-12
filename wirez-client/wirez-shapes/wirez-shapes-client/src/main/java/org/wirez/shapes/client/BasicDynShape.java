@@ -16,7 +16,6 @@
 
 package org.wirez.shapes.client;
 
-import org.wirez.core.client.shape.AbstractCompositeShape;
 import org.wirez.core.client.shape.MutationContext;
 import org.wirez.core.client.shape.view.HasRadius;
 import org.wirez.core.client.shape.view.HasSize;
@@ -25,10 +24,10 @@ import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.View;
 import org.wirez.core.graph.util.GraphUtils;
 
-public abstract class AbstractDynamicShape<W, V extends org.wirez.shapes.client.view.BasicShapeView>
-    extends AbstractBasicShape<W, V> {
+public abstract class BasicDynShape<W, V extends org.wirez.shapes.client.view.BasicShapeView>
+    extends BasicShape<W, V> {
 
-    public AbstractDynamicShape(final V shapeView) {
+    public BasicDynShape( final V shapeView) {
         super(shapeView);
     }
 
@@ -57,43 +56,43 @@ public abstract class AbstractDynamicShape<W, V extends org.wirez.shapes.client.
     protected abstract Double getBorderSize( Node<View<W>, Edge> element );
     protected abstract Double getBorderAlpha( Node<View<W>, Edge> element );
 
-    protected AbstractDynamicShape<W, V> _applyFillColor( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
+    protected BasicDynShape<W, V> _applyFillColor( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
         final String color = getBackgroundColor( element );
         super._applyFillColor( color, mutationContext );
         return this;
     }
 
-    protected AbstractDynamicShape<W, V> _applyFillApha( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
+    protected BasicDynShape<W, V> _applyFillApha( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
         final Double alpha = getBackgroundAlpha( element );
         super._applyFillAlpha( alpha, mutationContext );
         return this;
     }
 
-    protected AbstractDynamicShape<W, V> _applyBorders( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
+    protected BasicDynShape<W, V> _applyBorders( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
         final String color = getBorderColor( element );
         final Double width = getBorderSize( element );
         super._applyBorders( color, width, mutationContext );
         return this;
     }
 
-    protected AbstractDynamicShape<W, V> _applyBorderApha( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
+    protected BasicDynShape<W, V> _applyBorderApha( final Node<View<W>, Edge> element, final MutationContext mutationContext ) {
         final Double alpha = getBorderAlpha( element );
         super._applyBorderAlpha( alpha, mutationContext );
         return this;
     }
 
-    protected AbstractDynamicShape<W, V> _applyWidthAndHeight( final Node<View<W>, Edge> element,
-                                                               final Double width,
-                                                               final Double height,
-                                                               final MutationContext mutationContext ) {
+    protected BasicDynShape<W, V> _applyWidthAndHeight( final Node<View<W>, Edge> element,
+                                                        final Double width,
+                                                        final Double height,
+                                                        final MutationContext mutationContext ) {
         applySize( ( HasSize ) getShapeView(), width, height, mutationContext );
         GraphUtils.updateBounds( width, height, element.getContent() );
         return this;
     }
 
-    protected AbstractDynamicShape<W, V> _applyRadius( final Node<View<W>, Edge> element,
-                                                       final Double radius,
-                                                       final MutationContext mutationContext ) {
+    protected BasicDynShape<W, V> _applyRadius( final Node<View<W>, Edge> element,
+                                                final Double radius,
+                                                final MutationContext mutationContext ) {
         if ( null != radius ) {
             applyRadius( ( HasRadius ) getShapeView(), radius, mutationContext );
             GraphUtils.updateBounds( radius, element.getContent() );

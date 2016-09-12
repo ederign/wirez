@@ -30,7 +30,7 @@ public abstract class AddCanvasElementCommand<E extends Element> extends Abstrac
     }
 
     protected void doMutate(final AbstractCanvasHandler context) {
-        context.applyElementMutation( candidate, MutationContext.ANIMATION_ELASTIC );
+        context.applyElementMutation( candidate, MutationContext.ANIMATED );
     }
     
 }

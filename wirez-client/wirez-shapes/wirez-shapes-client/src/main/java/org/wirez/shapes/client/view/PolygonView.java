@@ -6,9 +6,8 @@ import com.ait.lienzo.client.core.shape.Shape;
 import com.ait.lienzo.client.core.shape.wires.WiresLayoutContainer;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import org.wirez.core.client.shape.view.HasRadius;
-import org.wirez.shapes.client.view.animatiion.AnimatedWiresShapeView;
 
-public class PolygonView<T extends PolygonView> extends AnimatedWiresShapeView<T>
+public class PolygonView<T extends PolygonView> extends BasicPrimitiveShapeView<T>
         implements HasRadius<T> {
 
     protected RegularPolygon polygon;

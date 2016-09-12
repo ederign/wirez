@@ -14,31 +14,27 @@
  * limitations under the License.
  */
 
-package org.wirez.core.client.animation;
+package org.wirez.core.client.shape.animation;
 
-import org.wirez.core.client.canvas.Canvas;
+import org.wirez.core.client.animation.AbstractAnimation;
 import org.wirez.core.client.shape.Shape;
 
-public interface ShapeAnimation {
-    
-    interface AnimationCallback {
+public abstract class AbstractShapeAnimation<S extends Shape>
+        extends AbstractAnimation<S>
+        implements ShapeAnimation<S> {
 
-        void onStart();
+    private S shape;
 
-        void onFrame();
-        
-        void onComplete();
-        
+    @Override
+    public ShapeAnimation<S> forShape( final S shape ) {
+        this.shape = shape;
+        return this;
     }
 
-    ShapeAnimation forShape( Shape<?> shape );
-    
-    ShapeAnimation forCanvas( Canvas canvas );
-    
-    ShapeAnimation setCallback( AnimationCallback callback );
+    @Override
+    public S getSource() {
+        return shape;
+    }
 
-    ShapeAnimation setDuration( long duration );
-    
-    void run();
     
 }

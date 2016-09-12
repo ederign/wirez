@@ -49,7 +49,7 @@ public abstract class NewNodeCommand<I> extends AbstractElementBuilderCommand<I>
     private HasEventHandlers<?, ?> layerEventHandlers;
 
     protected NewNodeCommand() {
-        this( null, null, null, null, null, null, null, null, null, null, null );
+        this( null, null, null, null, null, null, null, null, null, null );
     }
 
     public NewNodeCommand(final ClientDefinitionManager clientDefinitionManager,
@@ -59,12 +59,10 @@ public abstract class NewNodeCommand<I> extends AbstractElementBuilderCommand<I>
                           final GraphBoundsIndexer graphBoundsIndexer,
                           final NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory,
                           final NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl,
-                          final AnimationFactory animationFactory,
                           final DefinitionUtils definitionUtils,
                           final CanvasLayoutUtils canvasLayoutUtils,
                           final Event<CanvasElementSelectedEvent> elementSelectedEvent ) {
-        super( clientDefinitionManager, clientFactoryServices, shapeManager, glyphTooltip, graphBoundsIndexer,
-                animationFactory );
+        super( clientDefinitionManager, clientFactoryServices, shapeManager, glyphTooltip, graphBoundsIndexer );
         this.nodeDragProxyFactory = nodeDragProxyFactory;
         this.nodeBuilderControl = nodeBuilderControl;
         this.definitionUtils = definitionUtils;

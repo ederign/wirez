@@ -29,22 +29,19 @@ public abstract class AbstractBuilderCommand<I> extends AbstractToolboxCommand<I
     protected ClientDefinitionManager clientDefinitionManager;
     protected ClientFactoryServices clientFactoryServices;
     protected GraphBoundsIndexer graphBoundsIndexer;
-    protected AnimationFactory animationFactory;
 
     protected CanvasHighlight canvasHighlight;
 
     protected AbstractBuilderCommand() {
-        this( null, null, null, null );
+        this( null, null, null );
     }
 
     public AbstractBuilderCommand(final ClientDefinitionManager clientDefinitionManager,
                                   final ClientFactoryServices clientFactoryServices,
-                                  final GraphBoundsIndexer graphBoundsIndexer,
-                                  final AnimationFactory animationFactory ) {
+                                  final GraphBoundsIndexer graphBoundsIndexer ) {
         this.clientDefinitionManager = clientDefinitionManager;
         this.clientFactoryServices = clientFactoryServices;
         this.graphBoundsIndexer = graphBoundsIndexer;
-        this.animationFactory = animationFactory;
     }
 
     protected abstract String getDefinitionIdentifier( Context<AbstractCanvasHandler> context );
@@ -104,9 +101,7 @@ public abstract class AbstractBuilderCommand<I> extends AbstractToolboxCommand<I
 
                     getBuilderControl().enable( canvasHandler );
 
-                    canvasHighlight = new CanvasHighlight( canvasHandler,
-                            animationFactory.newShapeSelectAnimation(),
-                            animationFactory.newShapeDeselectAnimation() );
+                    canvasHighlight = new CanvasHighlight( canvasHandler );
 
                     graphBoundsIndexer.build( canvasHandler.getDiagram().getGraph() );
 
@@ -245,7 +240,6 @@ public abstract class AbstractBuilderCommand<I> extends AbstractToolboxCommand<I
         this.clientDefinitionManager = null;
         this.clientFactoryServices = null;
         this.graphBoundsIndexer = null;
-        this.animationFactory = null;
 
     }
     

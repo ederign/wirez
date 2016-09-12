@@ -19,11 +19,11 @@ package org.wirez.shapes.client.proxy;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.ViewConnector;
-import org.wirez.shapes.client.AbstractBasicConnector;
+import org.wirez.shapes.client.BasicConnector;
 import org.wirez.shapes.proxy.ConnectorProxy;
 
 public abstract class AbstractProxyConnector<W, V extends org.wirez.shapes.client.view.BasicConnectorView, P extends ConnectorProxy<W>>
-        extends AbstractBasicConnector<W, V> {
+        extends BasicConnector<W, V> {
 
     protected final transient P proxy;
 

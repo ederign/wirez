@@ -24,7 +24,7 @@ import javax.inject.Inject;
 public class LienzoNewNodeToolboxCommand extends NewNodeCommand<IPrimitive<?>> {
 
     protected LienzoNewNodeToolboxCommand() {
-        this( null, null, null, null, null, null, null, null, null, null, null );
+        this( null, null, null, null, null, null, null, null, null, null );
     }
 
     @Inject
@@ -35,13 +35,11 @@ public class LienzoNewNodeToolboxCommand extends NewNodeCommand<IPrimitive<?>> {
                                        final GraphBoundsIndexer graphBoundsIndexer,
                                        final NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory,
                                        final NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl,
-                                       final AnimationFactory animationFactory,
                                        final DefinitionUtils definitionUtils,
                                        final CanvasLayoutUtils canvasLayoutUtils,
                                        final Event<CanvasElementSelectedEvent> elementSelectedEvent ) {
         super( clientDefinitionManager, clientFactoryServices, shapeManager, glyphTooltip, graphBoundsIndexer,
-                nodeDragProxyFactory, nodeBuilderControl, animationFactory,
-                definitionUtils, canvasLayoutUtils, elementSelectedEvent );
+                nodeDragProxyFactory, nodeBuilderControl,  definitionUtils, canvasLayoutUtils, elementSelectedEvent );
     }
 
     @PostConstruct

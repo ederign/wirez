@@ -29,7 +29,7 @@ public abstract class AbstractElementBuilderCommand<I> extends AbstractBuilderCo
     protected ShapeFactory factory;
 
     protected AbstractElementBuilderCommand() {
-        this( null, null, null, null, null, null );
+        this( null, null, null, null, null );
     }
 
     @Inject
@@ -37,9 +37,8 @@ public abstract class AbstractElementBuilderCommand<I> extends AbstractBuilderCo
                                          final ClientFactoryServices clientFactoryServices,
                                          final ShapeManager shapeManager,
                                          final DefinitionGlyphTooltip<?> glyphTooltip,
-                                         final GraphBoundsIndexer graphBoundsIndexer,
-                                         final AnimationFactory animationFactory ) {
-        super( clientDefinitionManager, clientFactoryServices, graphBoundsIndexer, animationFactory );
+                                         final GraphBoundsIndexer graphBoundsIndexer ) {
+        super( clientDefinitionManager, clientFactoryServices, graphBoundsIndexer );
         this.shapeManager = shapeManager;
         this.glyphTooltip = glyphTooltip;
     }

@@ -7,7 +7,7 @@ import com.ait.lienzo.client.core.shape.wires.WiresLayoutContainer;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import org.wirez.core.client.shape.view.HasRadius;
 
-public class RingView<T extends RingView> extends org.wirez.shapes.client.view.animatiion.AnimatedWiresShapeView<T>
+public class RingView<T extends RingView> extends org.wirez.shapes.client.view.BasicPrimitiveShapeView<T>
     implements HasRadius<T> {
 
     protected Ring ring;

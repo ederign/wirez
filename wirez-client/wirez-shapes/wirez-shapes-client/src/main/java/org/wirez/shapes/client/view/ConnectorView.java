@@ -6,7 +6,7 @@ import com.ait.lienzo.client.core.shape.OrthogonalPolyLine;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import com.ait.lienzo.client.core.types.Point2DArray;
 
-public class ConnectorView<T extends ConnectorView> extends org.wirez.shapes.client.view.animatiion.AnimatedWiresConnectorView<T> {
+public class ConnectorView<T extends ConnectorView> extends org.wirez.shapes.client.view.BasicConnectorView<T> {
     
     public ConnectorView(final WiresManager manager,
                          final double... points) {

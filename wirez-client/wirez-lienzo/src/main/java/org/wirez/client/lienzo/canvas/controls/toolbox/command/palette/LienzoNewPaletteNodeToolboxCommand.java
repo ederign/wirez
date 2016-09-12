@@ -30,12 +30,10 @@ public abstract class LienzoNewPaletteNodeToolboxCommand extends NewPaletteNodeC
                                               final LienzoGlyphsHoverPalette palette,
                                               final NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory,
                                               final NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl,
-                                              final GraphBoundsIndexer graphBoundsIndexer,
-                                              final AnimationFactory animationFactory ) {
+                                              final GraphBoundsIndexer graphBoundsIndexer ) {
         super(clientFactoryServices, commonLookups, shapeManager,
                 definitionsPaletteBuilder, palette, nodeDragProxyFactory,
-                nodeBuilderControl, graphBoundsIndexer, animationFactory,
-                SVGUtils.createSVGIcon(SVGUtils.getAddIcon()) );
+                nodeBuilderControl, graphBoundsIndexer, SVGUtils.createSVGIcon(SVGUtils.getAddIcon()) );
     }
 
     @PostConstruct

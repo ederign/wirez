@@ -17,32 +17,30 @@
 package org.wirez.core.client.shape;
 
 import com.google.gwt.logging.client.LogConfiguration;
+import org.wirez.core.client.shape.view.IsConnector;
+import org.wirez.core.client.shape.view.ShapeView;
+import org.wirez.core.client.util.ShapeUtils;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.ViewConnector;
-import org.wirez.core.client.shape.view.IsConnector;
-import org.wirez.core.client.shape.view.ShapeView;
-import org.wirez.core.client.shape.view.animation.AnimationProperties;
-import org.wirez.core.client.shape.view.animation.AnimationProperty;
-import org.wirez.core.client.shape.view.animation.HasAnimations;
-import org.wirez.core.client.util.ShapeUtils;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * A base shape impl for handling contents of edge (connector) graph elements.
+ *
  * @param <W>
  */
 public abstract class AbstractConnector<W, E extends Edge<ViewConnector<W>, Node>, V extends ShapeView>
         implements EdgeShape<W, ViewConnector<W>, E, V>, Lifecycle {
 
-    private static Logger LOGGER = Logger.getLogger(AbstractConnector.class.getName());
+    private static Logger LOGGER = Logger.getLogger( AbstractConnector.class.getName() );
 
     protected String uuid;
     protected V view;
 
-    public AbstractConnector(final V view) {
+    public AbstractConnector( final V view ) {
         this.view = view;
     }
 
@@ -52,7 +50,7 @@ public abstract class AbstractConnector<W, E extends Edge<ViewConnector<W>, Node
     }
 
     @Override
-    public void setUUID(String uuid) {
+    public void setUUID( String uuid ) {
         this.uuid = uuid;
     }
 
@@ -77,22 +75,22 @@ public abstract class AbstractConnector<W, E extends Edge<ViewConnector<W>, Node
     public void afterDraw() {
 
     }
-    
-    @Override
-    public void applyPosition(final E element, final MutationContext mutationContext) {
-        
-    }
 
     @Override
-    public void applyProperties(final E element, final MutationContext mutationContext) {
+    public void applyPosition( final E element, final MutationContext mutationContext ) {
 
     }
 
     @Override
-    public void applyProperty(final E element, 
-                              final String propertyId, 
-                              final Object value,
-                              final MutationContext mutationContext) {
+    public void applyProperties( final E element, final MutationContext mutationContext ) {
+
+    }
+
+    @Override
+    public void applyProperty( final E element,
+                               final String propertyId,
+                               final Object value,
+                               final MutationContext mutationContext ) {
 
     }
 
@@ -101,23 +99,14 @@ public abstract class AbstractConnector<W, E extends Edge<ViewConnector<W>, Node
         view.destroy();
     }
 
-    protected void _applyFillColor(final String color, final MutationContext mutationContext) {
-        
-        if (color != null && color.trim().length() > 0) {
+    protected void _applyFillColor( final String color, final MutationContext mutationContext ) {
 
+        if ( color != null && color.trim().length() > 0 ) {
 
-            if ( isAnimationMutation(mutationContext) ) {
+            getShapeView().setFillColor( color );
 
-                addAnimationProperties( new AnimationProperties.FILL_COLOR( color ) );
-
-            } else {
-
-                getShapeView().setFillColor(color);
-
-            }
-            
         }
-        
+
     }
 
 
@@ -125,39 +114,40 @@ public abstract class AbstractConnector<W, E extends Edge<ViewConnector<W>, Node
         getShapeView().setFillAlpha( alpha );
     }
 
-    protected void  _applyBorders(final String color, 
+    protected void _applyBorders( final String color,
                                   final Double width,
-                                  final MutationContext mutationContext) {
-        
-        final boolean isAnimation = isAnimationMutation(mutationContext);
-        
-        if (color != null && color.trim().length() > 0) {
-            
-            if ( isAnimation ) {
+                                  final MutationContext mutationContext ) {
 
-                addAnimationProperties( new AnimationProperties.STROKE_COLOR( color ) );
-                
-            } else {
+        final boolean isAnimation = isAnimationMutation( mutationContext );
 
-                getShapeView().setStrokeColor(color);
+        if ( color != null && color.trim().length() > 0 ) {
 
-            }
+            _applyBorderColor( color, mutationContext );
+
         }
-        
-        if (width != null) {
 
-            if ( isAnimation ) {
+        if ( width != null ) {
 
-                addAnimationProperties( new AnimationProperties.STROKE_WIDTH( width ) );
-                
-            } else {
+            _applyBorderWidth( width, mutationContext );
 
-                getShapeView().setStrokeWidth(width);
-
-            }
-            
         }
-        
+
+    }
+
+    protected void _applyBorderColor( final String color,
+                                      final MutationContext mutationContext ) {
+
+        getShapeView().setStrokeColor( color );
+
+
+    }
+
+    protected void _applyBorderWidth( final double width,
+                                      final MutationContext mutationContext ) {
+
+        getShapeView().setStrokeWidth( width );
+
+
     }
 
     protected void _applyBorderAlpha( final double alpha, final MutationContext mutationContext ) {
@@ -166,67 +156,62 @@ public abstract class AbstractConnector<W, E extends Edge<ViewConnector<W>, Node
 
 
     @Override
-    public void applyConnections( final E element, 
-                                  final ShapeView<?> source, 
-                                  final ShapeView<?> target, 
-                                  final MutationContext mutationContext) {
+    public void applyConnections( final E element,
+                                  final ShapeView<?> source,
+                                  final ShapeView<?> target,
+                                  final MutationContext mutationContext ) {
 
-        final ViewConnector connectionContent = (ViewConnector) element.getContent();
+        final ViewConnector connectionContent = ( ViewConnector ) element.getContent();
         final int sourceMagnet = connectionContent.getSourceMagnetIndex();
         final int targetMagnet = connectionContent.getTargetMagnetIndex();
 
         if ( null != source ) {
-            
+
             final int z = source.getZIndex();
             view.setZIndex( z );
-            
+
         }
 
         if ( null != source && null != target ) {
-            
-            ( (IsConnector) view).connect( source, 
-                    sourceMagnet, 
-                    target, 
-                    targetMagnet, 
-                    true, 
-                    false);
-            
+
+            ( ( IsConnector ) view ).connect( source,
+                    sourceMagnet,
+                    target,
+                    targetMagnet,
+                    true,
+                    false );
+
         }
-        
+
     }
 
-    protected void addAnimationProperties(final AnimationProperty<?>... property) {
-        final HasAnimations<?> hasAnimations = (HasAnimations<?>) view;
-        hasAnimations.addAnimationProperties( property );
-    }
-    
     protected boolean isStaticMutation( final MutationContext mutationContext ) {
         return ShapeUtils.isStaticMutation( mutationContext );
     }
 
     protected boolean isAnimationMutation( final MutationContext mutationContext ) {
-        return ShapeUtils.isAnimationMutation( view, mutationContext);
+        return ShapeUtils.isAnimationMutation( view, mutationContext );
     }
-    
+
     @Override
-    public boolean equals(final Object o) {
-        
+    public boolean equals( final Object o ) {
+
         if ( this == o ) {
             return true;
         }
-        if ( !( o instanceof AbstractConnector) ) {
+        if ( !( o instanceof AbstractConnector ) ) {
             return false;
         }
 
-        AbstractConnector that = (AbstractConnector) o;
+        AbstractConnector that = ( AbstractConnector ) o;
 
-        return uuid.equals(that.uuid);
+        return uuid.equals( that.uuid );
     }
-    
-    private void log(final Level level, final String message) {
+
+    private void log( final Level level, final String message ) {
         if ( LogConfiguration.loggingIsEnabled() ) {
-            LOGGER.log(level, message);
+            LOGGER.log( level, message );
         }
     }
-    
+
 }

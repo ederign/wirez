@@ -5,11 +5,11 @@ import com.ait.lienzo.client.core.shape.Rectangle;
 import com.ait.lienzo.client.core.shape.wires.WiresLayoutContainer;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import org.wirez.core.client.shape.view.HasSize;
-import org.wirez.shapes.client.view.AbstractDecoratableShapeView;
+import org.wirez.shapes.client.view.BasicShapeView;
 import org.wirez.shapes.proxy.icon.dynamics.Icons;
 
 public class DynamicIconShapeView<T extends DynamicIconShapeView> 
-        extends AbstractDecoratableShapeView<T>
+        extends BasicShapeView<T>
         implements HasSize<T>  {
 
     private final static String BLACK = "#000000";
@@ -82,7 +82,7 @@ public class DynamicIconShapeView<T extends DynamicIconShapeView>
                 getStrokeWidth() );
         
         // Force to redraw the decorator.
-        super.createDecorators();
+        super.refreshDecorators();
 
         this.moveChild( decorator, - ( width / 2) , - ( height / 2 ) );
 

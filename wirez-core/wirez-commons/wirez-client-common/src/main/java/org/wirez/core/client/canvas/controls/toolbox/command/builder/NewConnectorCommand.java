@@ -29,7 +29,7 @@ public abstract class NewConnectorCommand<I> extends AbstractElementBuilderComma
     private String edgeId;
 
     protected NewConnectorCommand() {
-        this( null, null, null, null, null, null, null, null );
+        this( null, null, null, null, null, null, null );
     }
 
     public NewConnectorCommand(final ClientDefinitionManager clientDefinitionManager,
@@ -38,10 +38,8 @@ public abstract class NewConnectorCommand<I> extends AbstractElementBuilderComma
                                final DefinitionGlyphTooltip<?> glyphTooltip,
                                 final GraphBoundsIndexer graphBoundsIndexer,
                                 final ConnectorDragProxy<AbstractCanvasHandler> connectorDragProxyFactory,
-                                final EdgeBuilderControl<AbstractCanvasHandler> edgeBuilderControl,
-                                final AnimationFactory animationFactory ) {
-        super( clientDefinitionManager, clientFactoryServices, shapeManager, glyphTooltip, graphBoundsIndexer,
-                animationFactory );
+                                final EdgeBuilderControl<AbstractCanvasHandler> edgeBuilderControl ) {
+        super( clientDefinitionManager, clientFactoryServices, shapeManager, glyphTooltip, graphBoundsIndexer );
         this.connectorDragProxyFactory = connectorDragProxyFactory;
         this.edgeBuilderControl = edgeBuilderControl;
 

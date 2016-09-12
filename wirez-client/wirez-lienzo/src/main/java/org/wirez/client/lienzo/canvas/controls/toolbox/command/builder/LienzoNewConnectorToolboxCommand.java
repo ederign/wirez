@@ -20,7 +20,7 @@ import javax.inject.Inject;
 public class LienzoNewConnectorToolboxCommand extends NewConnectorCommand<Shape<?>> {
 
     protected LienzoNewConnectorToolboxCommand() {
-        this( null, null, null, null, null, null, null, null );
+        this( null, null, null, null, null, null, null );
     }
 
     @Inject
@@ -30,10 +30,9 @@ public class LienzoNewConnectorToolboxCommand extends NewConnectorCommand<Shape<
                                             final DefinitionGlyphTooltip<?> glyphTooltip,
                                             final GraphBoundsIndexer graphBoundsIndexer,
                                             final ConnectorDragProxy<AbstractCanvasHandler> connectorDragProxyFactory,
-                                            final EdgeBuilderControl<AbstractCanvasHandler> edgeBuilderControl,
-                                            final AnimationFactory animationFactory ) {
+                                            final EdgeBuilderControl<AbstractCanvasHandler> edgeBuilderControl ) {
         super( clientDefinitionManager, clientFactoryServices, shapeManager, glyphTooltip,
-                graphBoundsIndexer, connectorDragProxyFactory, edgeBuilderControl, animationFactory );
+                graphBoundsIndexer, connectorDragProxyFactory, edgeBuilderControl );
     }
 
     @PostConstruct

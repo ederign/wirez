@@ -11,10 +11,10 @@ import com.ait.lienzo.client.core.types.BoundingBox;
  * - The visible primitive
  * - The decorator primitive
  */
-public abstract class AbstractPrimitiveShapeView<T> extends org.wirez.shapes.client.view.AbstractDecoratableShapeView<T> {
+public abstract class BasicPrimitiveShapeView<T> extends org.wirez.shapes.client.view.BasicShapeView<T> {
     
-    public AbstractPrimitiveShapeView(final MultiPath path,
-                                      final WiresManager manager) {
+    public BasicPrimitiveShapeView( final MultiPath path,
+                                    final WiresManager manager) {
         super( path, manager );
     }
 
@@ -32,8 +32,9 @@ public abstract class AbstractPrimitiveShapeView<T> extends org.wirez.shapes.cli
         
     }
 
-    protected void initialize() {
-        super.initialize();
+    @Override
+    protected void postInitialize() {
+        super.postInitialize();
         getPath().setFillAlpha(0).setStrokeAlpha(0);
         getPath().moveToTop();
         createEventHandlerManager( getPrimitive() );
@@ -44,7 +45,7 @@ public abstract class AbstractPrimitiveShapeView<T> extends org.wirez.shapes.cli
         return createChildren();
     }
 
-    protected Shape<?> getShape() {
+    public Shape<?> getShape() {
         return getPrimitive();
     }
 
@@ -98,7 +99,7 @@ public abstract class AbstractPrimitiveShapeView<T> extends org.wirez.shapes.cli
         return (T) this;
     }
     
-    protected void doMoveChildren( final double width, 
+    public void doMoveChildren( final double width,
                                    final double height ) {
 
         doMoveChild( getShape(), width, height );
@@ -156,12 +157,5 @@ public abstract class AbstractPrimitiveShapeView<T> extends org.wirez.shapes.cli
     }
 
 
-    protected void updatePath( final double width, 
-                               final double height ) {
-
-        final double x = getPath().getX();
-        final double y = getPath().getY();
-        getPath().clear().rect(x, y, width, height);
-    }
 
 }

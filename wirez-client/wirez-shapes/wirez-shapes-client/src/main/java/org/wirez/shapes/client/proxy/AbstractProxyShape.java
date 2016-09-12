@@ -20,13 +20,11 @@ import org.wirez.core.client.shape.MutationContext;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.View;
-import org.wirez.shapes.client.AbstractBasicShape;
-import org.wirez.shapes.client.AbstractDynamicShape;
-import org.wirez.shapes.proxy.BasicDynamicShapeProxy;
+import org.wirez.shapes.client.BasicShape;
 import org.wirez.shapes.proxy.BasicShapeProxy;
 
 public abstract class AbstractProxyShape<W, V extends org.wirez.shapes.client.view.BasicShapeView, P extends BasicShapeProxy<W>> 
-        extends AbstractBasicShape<W, V> {
+        extends BasicShape<W, V> {
     
     protected final transient P proxy;
     

@@ -32,7 +32,6 @@ import org.wirez.core.client.shape.view.AbstractBindableShapeGlyphBuilder;
 import org.wirez.core.client.shape.view.ShapeGlyph;
 import org.wirez.core.client.shape.view.ShapeGlyphBuilder;
 import org.wirez.core.client.shape.view.ShapeView;
-import org.wirez.core.definition.util.DefinitionUtils;
 import org.wirez.shapes.client.proxy.DynamicIconShape;
 import org.wirez.shapes.client.proxy.RectangleShape;
 import org.wirez.shapes.client.proxy.StaticIconShape;
@@ -47,7 +46,6 @@ import org.wirez.shapes.factory.BasicShapesFactory;
 import org.wirez.shapes.proxy.*;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import java.util.Map;
 

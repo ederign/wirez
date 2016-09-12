@@ -1,13 +1,7 @@
 package org.wirez.core.client.animation;
 
-public interface AnimationFactory {
+public interface AnimationFactory<T, A extends Animation> {
 
-    ShapeAnimation newShapeSelectAnimation();
-
-    ShapeDeSelectionAnimation newShapeDeselectAnimation();
-
-    ShapeAnimation newShapeNotValidAnimation();
-
-    ShapeAnimation newShapeHighlightAnimation();
+    A newAnimation( T type );
 
 }

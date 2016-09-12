@@ -1,24 +1,19 @@
 package org.wirez.core.client.canvas.controls.select;
 
 import com.google.gwt.logging.client.LogConfiguration;
-import org.wirez.core.client.animation.AnimationFactory;
 import org.wirez.core.client.canvas.AbstractCanvasHandler;
 import org.wirez.core.client.canvas.Canvas;
 import org.wirez.core.client.canvas.Layer;
-import org.wirez.core.client.canvas.ShapeState;
 import org.wirez.core.client.canvas.controls.AbstractCanvasHandlerRegistrationControl;
 import org.wirez.core.client.canvas.event.registration.CanvasShapeRemovedEvent;
 import org.wirez.core.client.canvas.event.selection.CanvasClearSelectionEvent;
 import org.wirez.core.client.canvas.event.selection.CanvasElementSelectedEvent;
-import org.wirez.core.client.shape.EdgeShape;
 import org.wirez.core.client.shape.Shape;
-import org.wirez.core.client.shape.view.HasState;
-import org.wirez.core.client.shape.view.HasDecorators;
+import org.wirez.core.client.shape.ShapeState;
 import org.wirez.core.client.shape.view.event.MouseClickEvent;
 import org.wirez.core.client.shape.view.event.MouseClickHandler;
 import org.wirez.core.client.shape.view.event.ViewEventType;
 import org.wirez.core.client.shape.view.event.ViewHandler;
-import org.wirez.core.client.util.ShapeStateUtils;
 import org.wirez.core.graph.Element;
 
 import javax.enterprise.event.Event;
@@ -40,18 +35,15 @@ public abstract class AbstractSelectionControl extends AbstractCanvasHandlerRegi
 
     Event<CanvasElementSelectedEvent> elementSelectedEventEvent;
     Event<CanvasClearSelectionEvent> clearSelectionEventEvent;
-    ShapeStateUtils shapeStateUtils;
 
     protected final List<String> selectedElements = new ArrayList<String>();
     protected ViewHandler<?> layerClickHandler;
 
     @Inject
     public AbstractSelectionControl( final Event<CanvasElementSelectedEvent> elementSelectedEventEvent,
-                                     final Event<CanvasClearSelectionEvent> clearSelectionEventEvent,
-                                     final ShapeStateUtils shapeStateUtils ) {
+                                     final Event<CanvasClearSelectionEvent> clearSelectionEventEvent ) {
         this.elementSelectedEventEvent = elementSelectedEventEvent;
         this.clearSelectionEventEvent = clearSelectionEventEvent;
-        this.shapeStateUtils = shapeStateUtils;
     }
 
     /*
@@ -108,7 +100,9 @@ public abstract class AbstractSelectionControl extends AbstractCanvasHandlerRegi
                                            final boolean clearSelection ) {
 
         if ( clearSelection ) {
+
             clearSelection();
+
         }
 
         if ( selected ) {
@@ -203,13 +197,16 @@ public abstract class AbstractSelectionControl extends AbstractCanvasHandlerRegi
 
     protected void selectShape( final Shape shape ) {
 
-        shapeStateUtils.select( getCanvas(), shape );
+
+
 
     }
 
     protected void deselectShape( final Shape shape ) {
 
-        shapeStateUtils.deselect( getCanvas(), shape );
+        shape.applyState( ShapeState.DESELECTED );
+
+        getCanvas().draw();
 
     }
     
@@ -221,8 +218,6 @@ public abstract class AbstractSelectionControl extends AbstractCanvasHandlerRegi
 
     public SelectionControl<AbstractCanvasHandler, Element> select( final String uuid,
                                                                     final boolean fireEvent ) {
-
-        // GWT.log("***** SELECTING " + uuid );
 
         selectedElements.add( uuid );
 

@@ -3,7 +3,7 @@ package org.wirez.core.client.validation.canvas;
 import org.wirez.core.client.canvas.Canvas;
 import org.wirez.core.client.canvas.CanvasHandler;
 import org.wirez.core.client.shape.Shape;
-import org.wirez.core.client.util.ShapeStateUtils;
+import org.wirez.core.client.shape.ShapeState;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Element;
 import org.wirez.core.graph.Graph;
@@ -25,15 +25,12 @@ public class CanvasValidatorImpl
         implements CanvasValidator {
 
     GraphValidator graphValidator;
-    ShapeStateUtils shapeStateUtils;
 
     private GraphRulesManager rulesManager = null;
 
     @Inject
-    public CanvasValidatorImpl( final GraphValidator graphValidator,
-                                final ShapeStateUtils shapeStateUtils ) {
+    public CanvasValidatorImpl( final GraphValidator graphValidator ) {
         this.graphValidator = graphValidator;
-        this.shapeStateUtils = shapeStateUtils;
     }
 
     @Override
@@ -112,7 +109,9 @@ public class CanvasValidatorImpl
 
             final Shape shape = getShape( canvasHandler, element.getUUID() );
 
-            shapeStateUtils.invalid( canvas, shape );
+            shape.applyState( ShapeState.INVALID );
+
+            canvas.draw();
 
         }
 

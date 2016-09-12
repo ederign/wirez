@@ -44,13 +44,12 @@ public class LienzoPaletteMorphToolboxCommand extends AbstractPaletteMorphComman
                                             final NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory,
                                             final NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl,
                                             final GraphBoundsIndexer graphBoundsIndexer,
-                                            final AnimationFactory animationFactory,
                                             final Event<CanvasElementSelectedEvent> elementSelectedEvent ) {
         
         super( definitionUtils, commandFactory, canvasCommandManager, clientFactoryServices,
                 commonLookups,shapeManager, definitionsPaletteBuilder, palette, nodeDragProxyFactory,
-                nodeBuilderControl, graphBoundsIndexer, animationFactory,
-                SVGUtils.createSVGIcon( SVGUtils.getGearIcon() ), elementSelectedEvent );
+                nodeBuilderControl, graphBoundsIndexer,  SVGUtils.createSVGIcon( SVGUtils.getGearIcon() ),
+                elementSelectedEvent );
         
     }
 

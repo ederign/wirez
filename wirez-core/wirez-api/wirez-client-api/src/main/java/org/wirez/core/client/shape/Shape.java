@@ -34,6 +34,11 @@ public interface Shape<V extends ShapeView> {
     String getUUID();
 
     /**
+     * Update shape's view state.
+     */
+    void applyState( ShapeState shapeState );
+
+    /**
      * Returns the view representation on the canvas for the shape.
      */
     V getShapeView();

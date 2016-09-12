@@ -35,9 +35,6 @@ import org.wirez.core.client.shape.Lifecycle;
 import org.wirez.core.client.shape.MutationContext;
 import org.wirez.core.client.shape.Shape;
 import org.wirez.core.client.shape.factory.ShapeFactory;
-import org.wirez.core.client.shape.view.ShapeView;
-import org.wirez.core.client.shape.view.animation.AnimationTweener;
-import org.wirez.core.client.shape.view.animation.HasAnimations;
 import org.wirez.core.diagram.Diagram;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Element;
@@ -299,29 +296,16 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
                 graphShape.applyProperties( candidate, mutationContext );
             }
 
+            beforeElementUpdated( candidate, graphShape );
+
             canvas.draw();
 
             fireCanvasElementUpdated( candidate );
 
             afterElementUpdated( candidate, graphShape );
 
-            if ( mutationContext instanceof MutationContext.AnimationContext ) {
-                final MutationContext.AnimationContext animationContext = ( MutationContext.AnimationContext ) mutationContext;
-                animateShape( shape, animationContext.getTweener(), animationContext.getDuration() );
-            }
-
         }
 
-    }
-
-    protected void animateShape( final Shape shape,
-                                 final AnimationTweener tweener,
-                                 final double duration ) {
-        final ShapeView<?> view = shape.getShapeView();
-        if ( view instanceof HasAnimations ) {
-            final HasAnimations hasAnimation = ( HasAnimations ) view;
-            hasAnimation.animate( tweener, duration );
-        }
     }
 
     public void addChild( final Element parent, final Element child ) {
@@ -549,6 +533,14 @@ public abstract class AbstractCanvasHandler<D extends Diagram, C extends Abstrac
     }
 
     protected void afterElementDeleted( final Element element, final Shape shape ) {
+
+    }
+
+    protected void beforeElementUpdated( final Element element, final Shape shape ) {
+        if ( shape instanceof Lifecycle ) {
+            final Lifecycle lifecycle = ( Lifecycle ) shape;
+            lifecycle.beforeDraw();
+        }
 
     }
 

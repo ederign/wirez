@@ -6,9 +6,8 @@ import com.ait.lienzo.client.core.shape.Shape;
 import com.ait.lienzo.client.core.shape.wires.WiresLayoutContainer;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import org.wirez.core.client.shape.view.HasSize;
-import org.wirez.shapes.client.view.animatiion.AnimatedWiresShapeView;
 
-public class RectangleView<T extends RectangleView> extends AnimatedWiresShapeView<T>
+public class RectangleView<T extends RectangleView> extends BasicPrimitiveShapeView<T>
         implements HasSize<T> {
 
     private Rectangle rectangle;

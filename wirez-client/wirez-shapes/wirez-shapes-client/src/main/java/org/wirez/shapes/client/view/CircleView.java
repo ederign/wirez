@@ -7,7 +7,7 @@ import com.ait.lienzo.client.core.shape.wires.WiresLayoutContainer;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import org.wirez.core.client.shape.view.HasRadius;
 
-public class CircleView<T extends CircleView> extends org.wirez.shapes.client.view.animatiion.AnimatedWiresShapeView<T>
+public class CircleView<T extends CircleView> extends org.wirez.shapes.client.view.BasicPrimitiveShapeView<T>
         implements HasRadius<T> {
 
     protected Circle circle;

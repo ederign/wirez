@@ -1,8 +1,8 @@
 package org.wirez.core.client.util;
 
 import com.google.gwt.core.client.GWT;
-import org.wirez.core.client.api.ClientDefinitionManager;
 import org.wirez.core.client.ShapeSet;
+import org.wirez.core.client.api.ClientDefinitionManager;
 import org.wirez.core.client.canvas.AbstractCanvasHandler;
 import org.wirez.core.client.canvas.Canvas;
 import org.wirez.core.client.canvas.CanvasHandler;
@@ -10,8 +10,6 @@ import org.wirez.core.client.shape.EdgeShape;
 import org.wirez.core.client.shape.MutationContext;
 import org.wirez.core.client.shape.Shape;
 import org.wirez.core.client.shape.factory.ShapeFactory;
-import org.wirez.core.client.shape.view.animation.HasAnimations;
-import org.wirez.core.definition.adapter.DefinitionAdapter;
 import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Element;
 import org.wirez.core.graph.Node;
@@ -57,8 +55,7 @@ public class ShapeUtils {
     }
 
     public static boolean isAnimationMutation( final Object view, final MutationContext mutationContext ) {
-        return mutationContext != null && MutationContext.Type.ANIMATION.equals( mutationContext.getType() )
-                && view instanceof HasAnimations;
+        return mutationContext != null && MutationContext.Type.ANIMATION.equals( mutationContext.getType() );
     }
     
     public static ShapeSet getShapeSet(final Collection<ShapeSet> shapeSets, final String id) {

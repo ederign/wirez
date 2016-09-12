@@ -43,12 +43,10 @@ public abstract class NewPaletteNodeCommand<I> extends AbstractPaletteCommand<I>
                                  final NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory,
                                  final NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl,
                                  final GraphBoundsIndexer graphBoundsIndexer,
-                                 final AnimationFactory animationFactory,
                                  final I icon) {
         
         super(clientFactoryServices, commonLookups, shapeManager, definitionsPaletteBuilder, palette,
-                nodeDragProxyFactory, nodeBuilderControl, graphBoundsIndexer, 
-                animationFactory, icon);
+                nodeDragProxyFactory, nodeBuilderControl, graphBoundsIndexer, icon);
         
     }
 
@@ -126,9 +124,7 @@ public abstract class NewPaletteNodeCommand<I> extends AbstractPaletteCommand<I>
 
                         nodeBuilderControl.enable( canvasHandler );
 
-                        canvasHighlight = new CanvasHighlight( canvasHandler,
-                                animationFactory.newShapeSelectAnimation(),
-                                animationFactory.newShapeDeselectAnimation() );
+                        canvasHighlight = new CanvasHighlight( canvasHandler );
 
                         graphBoundsIndexer.build( canvasHandler.getDiagram().getGraph() );
 

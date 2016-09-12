@@ -1,7 +1,7 @@
-package org.wirez.core.client.canvas;
+package org.wirez.core.client.shape;
 
 /**
- * The available shape's states on a canvas.
+ * The available shape view's states on the canvas.
  */
 public enum ShapeState {
 

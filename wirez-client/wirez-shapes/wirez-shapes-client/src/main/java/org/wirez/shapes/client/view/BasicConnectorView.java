@@ -10,8 +10,6 @@ import com.ait.lienzo.client.core.shape.wires.WiresMagnet;
 import com.ait.lienzo.client.core.shape.wires.WiresManager;
 import org.wirez.client.lienzo.shape.view.AbstractConnectorView;
 import org.wirez.client.lienzo.shape.view.ViewEventHandlerManager;
-import org.wirez.core.client.canvas.ShapeState;
-import org.wirez.core.client.shape.view.HasState;
 import org.wirez.core.client.shape.view.HasEventHandlers;
 import org.wirez.core.client.shape.view.HasTitle;
 import org.wirez.core.client.shape.view.event.ViewEvent;
@@ -21,8 +19,7 @@ import org.wirez.core.client.shape.view.event.ViewHandler;
 public abstract class BasicConnectorView<T> extends AbstractConnectorView<T>
     implements 
         HasTitle<T>,
-        HasEventHandlers<T, Shape<?>>,
-        HasState {
+        HasEventHandlers<T, Shape<?>> {
     
     private static final ViewEventType[] SUPPORTED_EVENT_TYPES = new ViewEventType[] {
             ViewEventType.MOUSE_CLICK, ViewEventType.MOUSE_DBL_CLICK, ViewEventType.TOUCH
@@ -55,73 +52,7 @@ public abstract class BasicConnectorView<T> extends AbstractConnectorView<T>
         this.textPosition = WiresLayoutContainer.Layout.CENTER;
         this.eventHandlerManager = new ViewEventHandlerManager( getLine(), SUPPORTED_EVENT_TYPES );
     }
-    
-    
-    @Override
-    public void applyState(final ShapeState shapeState) {
 
-        if ( ShapeState.SELECTED.equals(shapeState) ) {
-            applySelectedState();
-        } else if ( ShapeState.HIGHLIGHT.equals(shapeState) ) {
-            applyHighlightState();
-        } else if ( ShapeState.DESELECTED.equals(shapeState) ) {
-            applyUnSelectedState();
-        } else if ( ShapeState.UNHIGHLIGHT.equals(shapeState) ) {
-            applyUnHighlightState();
-        } else if ( ShapeState.INVALID.equals(shapeState) ) {
-            applyInvalidState();
-        }
-
-    }
-    
-    public T applySelectedState() {
-        return applyActiveState(ShapeState.SELECTED.getColor());
-    }
-
-    public T applyInvalidState() {
-        return applyActiveState(ShapeState.INVALID.getColor());
-    }
-
-    public T applyHighlightState() {
-        return applyActiveState(ShapeState.HIGHLIGHT.getColor());
-    }
-
-    public T applyUnSelectedState() {
-        return applyDeActiveState();
-    }
-
-    public T applyUnHighlightState() {
-        return applyDeActiveState();
-    }
-
-    protected T applyActiveState(final String color ) {
-        if ( null == this.strokeWidth) {
-            this.strokeWidth = getLine().getStrokeWidth();
-        }
-        
-        if ( null == this.color) {
-            this.color = getLine().getStrokeColor();
-        }
-
-        getLine().setStrokeWidth(5);
-        getLine().setStrokeColor( color );
-        
-        return (T) this;
-    }
-
-    protected T applyDeActiveState() {
-        if ( null != this.strokeWidth ) {
-            getLine().setStrokeWidth(5);
-            this.strokeWidth = null;
-        }
-
-        if ( null != this.color ) {
-            getLine().setStrokeColor(color);
-            this.color = null;
-        }
-        
-        return (T) this;
-    }
 
     @Override
     public boolean supports(final ViewEventType type) {

@@ -1,29 +1,19 @@
 package org.wirez.core.client.canvas.util;
 
+import org.wirez.core.client.shape.ShapeState;
 import org.wirez.core.graph.Node;
-import org.wirez.core.client.animation.ShapeAnimation;
-import org.wirez.core.client.animation.ShapeDeSelectionAnimation;
 import org.wirez.core.client.canvas.AbstractCanvas;
 import org.wirez.core.client.canvas.AbstractCanvasHandler;
-import org.wirez.core.client.canvas.ShapeState;
 import org.wirez.core.client.shape.Shape;
-import org.wirez.core.client.shape.view.HasState;
-import org.wirez.core.client.shape.view.HasDecorators;
 
 public class CanvasHighlight {
 
     private final AbstractCanvasHandler canvasHandler;
     private Shape shape;
     private long duration = 200;
-    private ShapeAnimation selectionAnimation;
-    private ShapeDeSelectionAnimation deSelectionAnimation;
-    
-    public CanvasHighlight(final AbstractCanvasHandler canvasHandler,
-                           final ShapeAnimation selectionAnimation,
-                           final ShapeDeSelectionAnimation deSelectionAnimation ) {
+
+    public CanvasHighlight(final AbstractCanvasHandler canvasHandler ) {
         this.canvasHandler = canvasHandler;
-        this.selectionAnimation = selectionAnimation;
-        this.deSelectionAnimation = deSelectionAnimation;
     }
 
     public CanvasHighlight setDuration(final long duration) {
@@ -41,19 +31,10 @@ public class CanvasHighlight {
             if ( null != shape ) {
                 this.shape = shape;
 
-                if (shape.getShapeView() instanceof HasState ) {
-                    
-                    final HasState canvasStateMutation = (HasState ) shape.getShapeView();
-                    canvasStateMutation.applyState(ShapeState.HIGHLIGHT);
-                    
-                } else if (shape.getShapeView() instanceof HasDecorators) {
-                    
-                    selectionAnimation.forShape( shape )
-                            .forCanvas( getCanvas() )
-                            .setDuration( duration )
-                            .run();
+                shape.applyState( ShapeState.SELECTED );
 
-                }
+                getCanvas().draw();
+
 
             }
         }
@@ -62,23 +43,9 @@ public class CanvasHighlight {
     public void unhighLight() {
         if ( null != this.shape ) {
 
-            if (shape instanceof HasState ) {
-                
-                final HasState canvasStateMutation = (HasState ) shape.getShapeView();
-                canvasStateMutation.applyState(ShapeState.UNHIGHLIGHT);
-                
-            } else if (shape.getShapeView() instanceof HasDecorators) {
-                
-                deSelectionAnimation
-                        .setStrokeWidth( 0 )
-                        .setStrokeAlpha( 0 )
-                        .setColor( "#000000" )
-                        .forShape( shape )
-                        .forCanvas( getCanvas() )
-                        .setDuration( duration )
-                        .run();
-                
-            }
+            this.shape.applyState( ShapeState.UNHIGHLIGHT );
+
+            getCanvas().draw();
 
             this.shape = null;
 
@@ -88,9 +55,7 @@ public class CanvasHighlight {
     public void destroy() {
       
         this.shape = null;
-        this.selectionAnimation = null;
-        this.deSelectionAnimation = null;
-        
+
     }
 
 

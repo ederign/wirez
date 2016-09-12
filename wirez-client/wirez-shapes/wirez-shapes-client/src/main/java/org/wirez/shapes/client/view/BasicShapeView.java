@@ -41,6 +41,8 @@ public abstract class BasicShapeView<T> extends AbstractShapeView<T>
     protected ViewEventHandlerManager eventHandlerManager;
     protected final List<BasicShapeView<T>> children = new ArrayList<>();
     protected Text text;
+    protected Shape<?> decorator = null;
+
     protected WiresLayoutContainer.Layout textPosition;
     protected Type fillGradientType = null;
     protected String fillGradientStartColor = null;
@@ -50,7 +52,52 @@ public abstract class BasicShapeView<T> extends AbstractShapeView<T>
                            final WiresManager manager ) {
         super( path, manager );
         this.textPosition = WiresLayoutContainer.Layout.BOTTOM;
+
+        initialize();
+
+    }
+
+    private void initialize() {
+
         createEventHandlerManager( getShape() );
+
+        refreshDecorators();
+
+        postInitialize();
+
+    }
+
+    protected void postInitialize() {
+
+    }
+
+    protected Shape<?> createDecorator() {
+        return null;
+    }
+
+    public void refreshDecorators() {
+
+        if ( null != decorator ) {
+
+            decorator.removeFromParent();
+
+        }
+
+        decorator = createDecorator();
+
+        if ( null != decorator ) {
+
+            decorator
+                    .setStrokeWidth(0)
+                    .setFillAlpha(0)
+                    .setStrokeAlpha(0);
+
+        }
+
+    }
+
+    public Shape getDecorator() {
+        return decorator;
     }
 
     protected void createEventHandlerManager( final Node<?> node ) {
@@ -95,6 +142,14 @@ public abstract class BasicShapeView<T> extends AbstractShapeView<T>
     @Override
     public Shape<?> getAttachableShape() {
         return getShape();
+    }
+
+    public void updatePath( final double width,
+                               final double height ) {
+
+        final double x = getPath().getX();
+        final double y = getPath().getY();
+        getPath().clear().rect(x, y, width, height);
     }
 
     @Override
@@ -192,6 +247,10 @@ public abstract class BasicShapeView<T> extends AbstractShapeView<T>
         return text.moveToTop().setDraggable( false ).setAlpha( 0 );
     }
 
+    public Text getText() {
+        return text;
+    }
+
     private WiresLayoutContainer.Layout getTextPosition() {
         return textPosition;
     }
@@ -217,7 +276,7 @@ public abstract class BasicShapeView<T> extends AbstractShapeView<T>
     }
 
     @SuppressWarnings( "unchecked" )
-    protected T updateFillGradient( final double width,
+    public T updateFillGradient( final double width,
                                     final double height ) {
 
         if ( this.fillGradientType != null
@@ -243,6 +302,11 @@ public abstract class BasicShapeView<T> extends AbstractShapeView<T>
             eventHandlerManager.destroy();
             eventHandlerManager = null;
 
+        }
+
+        if ( null != decorator ) {
+            decorator.removeFromParent();
+            decorator = null;
         }
 
     }

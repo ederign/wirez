@@ -48,13 +48,11 @@ public abstract class AbstractPaletteMorphCommand<I> extends AbstractPaletteComm
                                        final NodeDragProxy<AbstractCanvasHandler> nodeDragProxyFactory,
                                        final NodeBuilderControl<AbstractCanvasHandler> nodeBuilderControl,
                                        final GraphBoundsIndexer graphBoundsIndexer,
-                                       final AnimationFactory animationFactory,
                                        final I icon,
                                        final Event<CanvasElementSelectedEvent> elementSelectedEvent ) {
         
         super( clientFactoryServices, commonLookups, shapeManager, definitionsPaletteBuilder, palette,
-                nodeDragProxyFactory, nodeBuilderControl, graphBoundsIndexer, 
-                animationFactory, icon );
+                nodeDragProxyFactory, nodeBuilderControl, graphBoundsIndexer, icon );
 
         this.definitionUtils = definitionUtils;
         this.commandFactory = commandFactory;
