@@ -28,6 +28,7 @@ import org.wirez.core.graph.Edge;
 import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.View;
 import org.wirez.shapes.client.view.animatiion.BasicShapeAnimation;
+import org.wirez.shapes.client.view.animatiion.BasicShapeDecoratorAnimation;
 
 public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.BasicShapeView>
     extends AbstractCompositeShape<W, Node<View<W>, Edge>, V> {
@@ -111,8 +112,7 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
         applyDeActiveState();
     }
 
-    // TODO Animations...?
-    private void applyActiveState(final String color ) {
+    private void applyActiveState( final String color ) {
         if ( null == this._strokeWidth ) {
             this._strokeWidth = getShapeView().getDecorator().getStrokeWidth();
         }
@@ -125,15 +125,17 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
             this._strokeAlpha = getShapeView().getDecorator().getStrokeAlpha();
         }
 
-        getShapeView().getDecorator().setStrokeWidth( 5 );
+        /*getShapeView().getDecorator().setStrokeWidth( 5 );
         getShapeView().getDecorator().setStrokeAlpha( 1 );
-        getShapeView().getDecorator().setStrokeColor( color );
+        getShapeView().getDecorator().setStrokeColor( color );*/
+
+        new BasicShapeDecoratorAnimation( color, 5, 1 ).forShape( this ).run();
 
     }
 
-    // TODO Animations...?
     private void applyDeActiveState() {
-        if ( null != this._strokeWidth ) {
+
+       /* if ( null != this._strokeWidth ) {
             getShapeView().getDecorator().setStrokeWidth( this._strokeWidth );
             this._strokeWidth = null;
         }
@@ -143,7 +145,31 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
             this._strokeColor = null;
         }
 
-        getShapeView().getDecorator().setStrokeAlpha( null != this._strokeAlpha ? this._strokeAlpha : 1 );
+        getShapeView().getDecorator().setStrokeAlpha( null != this._strokeAlpha ? this._strokeAlpha : 0 );*/
+
+        new BasicShapeDecoratorAnimation( this._strokeColor,
+                            null != this._strokeWidth ? this._strokeWidth : 0,
+                            null != this._strokeAlpha ? this._strokeAlpha : 0 )
+                .forShape( this )
+                .setCallback( new Animation.AnimationCallback() {
+                    @Override
+                    public void onStart() {
+
+                    }
+
+                    @Override
+                    public void onFrame() {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        BasicShape.this._strokeWidth = null;
+                        BasicShape.this._strokeColor = null;
+                        BasicShape.this._strokeAlpha = null;
+                    }
+                } )
+                .run();
     }
 
     @Override

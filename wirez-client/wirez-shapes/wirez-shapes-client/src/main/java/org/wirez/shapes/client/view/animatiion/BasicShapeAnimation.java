@@ -16,19 +16,19 @@
 
 package org.wirez.shapes.client.view.animatiion;
 
-import com.ait.lienzo.client.core.animation.*;
+import com.ait.lienzo.client.core.animation.AnimationProperties;
+import com.ait.lienzo.client.core.animation.AnimationProperty;
+import com.ait.lienzo.client.core.animation.AnimationTweener;
 import com.ait.lienzo.client.core.shape.Shape;
 import com.ait.lienzo.client.core.shape.Text;
-import org.wirez.core.client.shape.animation.AbstractShapeAnimation;
 import org.wirez.shapes.client.BasicShape;
-import org.wirez.shapes.client.view.BasicPrimitiveShapeView;
 import org.wirez.shapes.client.view.BasicShapeView;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class BasicShapeAnimation
-        extends AbstractShapeAnimation<BasicShape> {
+        extends AbstractBasicAnimation<BasicShape> {
 
     private final List<AnimationProperty> shapeAnimationProperties = new LinkedList<>();
     private final List<AnimationProperty> decoratorAnimationProperties = new LinkedList<>();
@@ -48,7 +48,7 @@ public class BasicShapeAnimation
         // Shape property animations.
         final Shape shape = view.getShape();
         final AnimationProperties _shapeAnimationProperties = translate( shapeAnimationProperties );
-        shape.animate( tweener, _shapeAnimationProperties, duration, animationCallback );
+        shape.animate( tweener, _shapeAnimationProperties, duration, getAnimationCallback() );
         shapeAnimationProperties.clear();
 
 
@@ -144,33 +144,5 @@ public class BasicShapeAnimation
     public void animateFontAlpha( final Double value ) {
         textAnimationProperties.add( AnimationProperty.Properties.ALPHA( value ) );
     }
-
-    private final com.ait.lienzo.client.core.animation.AnimationCallback animationCallback =
-            new com.ait.lienzo.client.core.animation.AnimationCallback() {
-
-        @Override
-        public void onStart( IAnimation animation, IAnimationHandle handle ) {
-            super.onStart( animation, handle );
-            if ( null != getCallback() ) {
-                getCallback().onStart();
-            }
-        }
-
-        @Override
-        public void onFrame( IAnimation animation, IAnimationHandle handle ) {
-            super.onFrame( animation, handle );
-            if ( null != getCallback() ) {
-                getCallback().onFrame();
-            }
-        }
-
-        @Override
-        public void onClose( IAnimation animation, IAnimationHandle handle ) {
-            super.onClose( animation, handle );
-            if ( null != getCallback() ) {
-                getCallback().onComplete();
-            }
-        }
-    };
 
 }

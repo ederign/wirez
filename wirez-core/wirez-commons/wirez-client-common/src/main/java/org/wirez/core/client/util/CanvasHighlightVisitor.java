@@ -70,9 +70,9 @@ public class CanvasHighlightVisitor {
 
             final Shape shape = shapes.get( index );
 
-
             shape.applyState( ShapeState.HIGHLIGHT );
 
+            // TODO: Animate on previous animation finished.
             animate( index + 1, callback );
 
         } else {

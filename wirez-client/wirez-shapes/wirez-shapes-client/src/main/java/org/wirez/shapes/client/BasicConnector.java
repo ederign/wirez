@@ -25,7 +25,6 @@ import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.ViewConnector;
 import org.wirez.shapes.client.view.BasicConnectorView;
 import org.wirez.shapes.client.view.animatiion.BasicConnectorAnimation;
-import org.wirez.shapes.client.view.animatiion.BasicShapeAnimation;
 
 public abstract class BasicConnector<W, V extends BasicConnectorView>
         extends AbstractConnector<W, Edge<ViewConnector<W>, Node>, V> {
@@ -131,7 +130,7 @@ public abstract class BasicConnector<W, V extends BasicConnectorView>
         applyDeActiveState();
     }
 
-    // TODO Animations...?
+    // TODO Use of BasicShapeStateAnimation.
     private void applyActiveState(final String color ) {
         if ( null == this._strokeWidth ) {
             this._strokeWidth = getShapeView().getLine().getStrokeWidth();
@@ -151,7 +150,7 @@ public abstract class BasicConnector<W, V extends BasicConnectorView>
 
     }
 
-    // TODO Animations...?
+    // TODO Use of BasicShapeStateAnimation.
     private void applyDeActiveState() {
         if ( null != this._strokeWidth ) {
             getShapeView().getLine().setStrokeWidth( this._strokeWidth );
@@ -164,6 +163,7 @@ public abstract class BasicConnector<W, V extends BasicConnectorView>
         }
 
         getShapeView().getLine().setStrokeAlpha( null != this._strokeAlpha ? this._strokeAlpha : 1 );
+        this._strokeAlpha = null;
 
     }
 

@@ -16,9 +16,10 @@
 
 package org.wirez.shapes.client.view.animatiion;
 
-import com.ait.lienzo.client.core.animation.*;
+import com.ait.lienzo.client.core.animation.AnimationProperties;
+import com.ait.lienzo.client.core.animation.AnimationProperty;
+import com.ait.lienzo.client.core.animation.AnimationTweener;
 import com.ait.lienzo.client.core.shape.Group;
-import org.wirez.core.client.shape.animation.AbstractShapeAnimation;
 import org.wirez.shapes.client.BasicConnector;
 import org.wirez.shapes.client.view.BasicConnectorView;
 
@@ -26,7 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class BasicConnectorAnimation
-        extends AbstractShapeAnimation<BasicConnector> {
+        extends AbstractBasicAnimation<BasicConnector> {
 
     private final List<AnimationProperty> decoratableLineAnimationProperties = new LinkedList<>();
 
@@ -43,7 +44,7 @@ public class BasicConnectorAnimation
 
         // Shape property animations.
         final AnimationProperties _ps = translate( decoratableLineAnimationProperties );
-        group.animate( tweener, _ps, duration, animationCallback );
+        group.animate( tweener, _ps, duration, getAnimationCallback() );
         decoratableLineAnimationProperties.clear();
 
     }
@@ -71,33 +72,5 @@ public class BasicConnectorAnimation
     public void animateStrokeWidth( final Double value ) {
         decoratableLineAnimationProperties.add( AnimationProperty.Properties.STROKE_WIDTH( value ) );
     }
-
-    private final com.ait.lienzo.client.core.animation.AnimationCallback animationCallback =
-            new com.ait.lienzo.client.core.animation.AnimationCallback() {
-
-        @Override
-        public void onStart( IAnimation animation, IAnimationHandle handle ) {
-            super.onStart( animation, handle );
-            if ( null != getCallback() ) {
-                getCallback().onStart();
-            }
-        }
-
-        @Override
-        public void onFrame( IAnimation animation, IAnimationHandle handle ) {
-            super.onFrame( animation, handle );
-            if ( null != getCallback() ) {
-                getCallback().onFrame();
-            }
-        }
-
-        @Override
-        public void onClose( IAnimation animation, IAnimationHandle handle ) {
-            super.onClose( animation, handle );
-            if ( null != getCallback() ) {
-                getCallback().onComplete();
-            }
-        }
-    };
 
 }
