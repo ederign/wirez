@@ -22,6 +22,7 @@ import com.ait.lienzo.client.core.shape.Text;
 import org.wirez.core.client.shape.animation.AbstractShapeAnimation;
 import org.wirez.shapes.client.BasicShape;
 import org.wirez.shapes.client.view.BasicPrimitiveShapeView;
+import org.wirez.shapes.client.view.BasicShapeView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,7 +41,7 @@ public class BasicShapeAnimation
     public void run() {
 
         final AnimationTweener tweener = AnimationTweener.LINEAR;
-        final BasicPrimitiveShapeView<?> view = getView();
+        final BasicShapeView<?> view = getView();
         final Text text = view.getText();
         final long duration = getDuration();
 
@@ -78,8 +79,8 @@ public class BasicShapeAnimation
         return _ps;
     }
 
-    private BasicPrimitiveShapeView<?> getView() {
-        return ( BasicPrimitiveShapeView<?> ) getSource().getShapeView();
+    private BasicShapeView<?> getView() {
+        return ( BasicShapeView<?> ) getSource().getShapeView();
     }
 
     public void clear() {

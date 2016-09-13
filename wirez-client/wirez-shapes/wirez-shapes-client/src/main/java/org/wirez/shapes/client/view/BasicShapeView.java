@@ -134,6 +134,63 @@ public abstract class BasicShapeView<T> extends AbstractShapeView<T>
         return children;
     }
 
+    public void doMoveChildren( final double width,
+                                final double height ) {
+
+        doMoveChild( getShape(), width, height );
+
+        if ( null != decorator ) {
+
+            doMoveChild( decorator, width, height );
+
+        }
+
+        if ( !children.isEmpty() ) {
+
+            for ( final BasicShapeView<T> child : children ) {
+
+                final IPrimitive<?> childPrimitive = (IPrimitive<?>) child.getContainer();
+                final BoundingBox bb = child.getPath().getBoundingBox();
+
+                doMoveChild( childPrimitive, bb.getWidth(), bb.getHeight() );
+
+            }
+
+        }
+
+    }
+
+    protected void doMoveChild( final IPrimitive<?> child,
+                                final double width,
+                                final double height ) {
+
+        final double sx = getChildCenterCoordinate( child, width );
+
+        final double sy = getChildCenterCoordinate( child, height );
+
+        if ( sx != 0 || sy != 0 ) {
+
+            this.moveChild( child, sx, sy );
+
+        }
+
+    }
+
+    protected double getChildCenterCoordinate( final IPrimitive<?> child,
+                                               final double delta ) {
+
+        if ( child.getAttributes().getRadius() == 0 ) {
+
+            return - ( delta / 2 );
+
+        } else {
+
+            return  0;
+
+        }
+
+    }
+
     @Override
     public boolean supports( final ViewEventType type ) {
         return eventHandlerManager.supports( type );
