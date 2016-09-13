@@ -25,15 +25,16 @@ import org.wirez.shapes.client.view.BasicConnectorView;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BasicConnectorAnimation<S extends BasicConnector>
-        extends AbstractShapeAnimation<S> {
+public class BasicConnectorAnimation
+        extends AbstractShapeAnimation<BasicConnector> {
 
     private final List<AnimationProperty> decoratableLineAnimationProperties = new LinkedList<>();
 
+    public BasicConnectorAnimation() {
+    }
+
     @Override
     public void run() {
-
-        clear();
 
         final AnimationTweener tweener = AnimationTweener.LINEAR;
         final BasicConnectorView<?> view = ( BasicConnectorView<?> ) getSource().getShapeView();

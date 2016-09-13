@@ -33,10 +33,11 @@ public class BasicShapeAnimation
     private final List<AnimationProperty> decoratorAnimationProperties = new LinkedList<>();
     private final List<AnimationProperty> textAnimationProperties = new LinkedList<>();
 
+    public BasicShapeAnimation() {
+    }
+
     @Override
     public void run() {
-
-        clear();
 
         final AnimationTweener tweener = AnimationTweener.LINEAR;
         final BasicPrimitiveShapeView<?> view = getView();

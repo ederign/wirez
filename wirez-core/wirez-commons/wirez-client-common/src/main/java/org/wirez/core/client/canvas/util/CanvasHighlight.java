@@ -31,7 +31,7 @@ public class CanvasHighlight {
             if ( null != shape ) {
                 this.shape = shape;
 
-                shape.applyState( ShapeState.SELECTED );
+                shape.applyState( ShapeState.HIGHLIGHT );
 
                 getCanvas().draw();
 

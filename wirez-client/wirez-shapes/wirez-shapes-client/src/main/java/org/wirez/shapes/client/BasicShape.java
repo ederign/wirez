@@ -34,6 +34,7 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
 
     private BasicShapeAnimation animation = null;
     private Double _strokeWidth = null;
+    private Double _strokeAlpha = null;
     private String _strokeColor = null;
 
     public BasicShape( final V shapeView) {
@@ -50,24 +51,24 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
 
         if ( hasAnimation() ) {
 
-            getAnimation().setCallback( new Animation.AnimationCallback() {
-                @Override
-                public void onStart() {
+            getAnimation()
+                    .setCallback( new Animation.AnimationCallback() {
+                        @Override
+                        public void onStart() {
 
-                }
+                        }
 
-                @Override
-                public void onFrame() {
+                        @Override
+                        public void onFrame() {
 
-                }
+                        }
 
-                @Override
-                public void onComplete() {
-                    BasicShape.this.animation = null;
-                }
-            } );
-
-            getAnimation().run();
+                        @Override
+                        public void onComplete() {
+                            BasicShape.this.animation = null;
+                        }
+                    } )
+                    .run();
 
         }
 
@@ -120,7 +121,12 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
             this._strokeColor = getShapeView().getDecorator().getStrokeColor();
         }
 
+        if ( null == this._strokeAlpha) {
+            this._strokeAlpha = getShapeView().getDecorator().getStrokeAlpha();
+        }
+
         getShapeView().getDecorator().setStrokeWidth( 5 );
+        getShapeView().getDecorator().setStrokeAlpha( 1 );
         getShapeView().getDecorator().setStrokeColor( color );
 
     }
@@ -137,6 +143,7 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
             this._strokeColor = null;
         }
 
+        getShapeView().getDecorator().setStrokeAlpha( null != this._strokeAlpha ? this._strokeAlpha : 1 );
     }
 
     @Override
@@ -228,7 +235,8 @@ public abstract class BasicShape<W, V extends org.wirez.shapes.client.view.Basic
 
         if ( !hasAnimation() ) {
 
-            return this.animation = new BasicShapeAnimation();
+            this.animation = new BasicShapeAnimation();
+            this.animation.forShape( this );
         }
 
         return animation;

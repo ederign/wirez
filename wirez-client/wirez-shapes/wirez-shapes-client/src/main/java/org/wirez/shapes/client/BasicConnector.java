@@ -25,12 +25,14 @@ import org.wirez.core.graph.Node;
 import org.wirez.core.graph.content.view.ViewConnector;
 import org.wirez.shapes.client.view.BasicConnectorView;
 import org.wirez.shapes.client.view.animatiion.BasicConnectorAnimation;
+import org.wirez.shapes.client.view.animatiion.BasicShapeAnimation;
 
 public abstract class BasicConnector<W, V extends BasicConnectorView>
         extends AbstractConnector<W, Edge<ViewConnector<W>, Node>, V> {
 
     private BasicConnectorAnimation animation = null;
     private Double _strokeWidth = null;
+    private Double _strokeAlpha = null;
     private String _strokeColor = null;
 
     public BasicConnector( final V view) {
@@ -139,7 +141,12 @@ public abstract class BasicConnector<W, V extends BasicConnectorView>
             this._strokeColor = getShapeView().getLine().getStrokeColor();
         }
 
+        if ( null == this._strokeAlpha) {
+            this._strokeAlpha = getShapeView().getLine().getStrokeAlpha();
+        }
+
         getShapeView().getLine().setStrokeWidth( 5 );
+        getShapeView().getLine().setStrokeAlpha( 1 );
         getShapeView().getLine().setStrokeColor( color );
 
     }
@@ -155,6 +162,8 @@ public abstract class BasicConnector<W, V extends BasicConnectorView>
             getShapeView().getLine().setStrokeColor( this._strokeColor );
             this._strokeColor = null;
         }
+
+        getShapeView().getLine().setStrokeAlpha( null != this._strokeAlpha ? this._strokeAlpha : 1 );
 
     }
 
@@ -245,7 +254,8 @@ public abstract class BasicConnector<W, V extends BasicConnectorView>
 
         if ( !hasAnimation() ) {
 
-            return this.animation = new BasicConnectorAnimation();
+            this.animation = new BasicConnectorAnimation();
+            this.animation.forShape( this );
         }
 
         return animation;

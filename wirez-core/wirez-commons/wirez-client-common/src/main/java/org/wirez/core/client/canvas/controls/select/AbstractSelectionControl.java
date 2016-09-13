@@ -197,7 +197,9 @@ public abstract class AbstractSelectionControl extends AbstractCanvasHandlerRegi
 
     protected void selectShape( final Shape shape ) {
 
+        shape.applyState( ShapeState.SELECTED );
 
+        getCanvas().draw();
 
 
     }

@@ -32,8 +32,6 @@ public interface Animation<S> {
 
     S getSource();
     
-    Animation forCanvas( Canvas canvas );
-    
     Animation setCallback( AnimationCallback callback );
 
     Animation setDuration( long duration );

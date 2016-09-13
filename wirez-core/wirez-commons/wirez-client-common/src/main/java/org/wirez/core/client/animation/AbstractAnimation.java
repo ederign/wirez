@@ -16,21 +16,12 @@
 
 package org.wirez.core.client.animation;
 
-import org.wirez.core.client.canvas.Canvas;
-
 public abstract class AbstractAnimation<S> implements Animation<S> {
 
     private static final long ANIMATION_DURATION = 500;
 
-    private Canvas canvas;
     private AnimationCallback callback;
     private long duration = ANIMATION_DURATION;
-
-    @Override
-    public AbstractAnimation forCanvas( final Canvas canvas) {
-        this.canvas = canvas;
-        return this;
-    }
 
     @Override
     public AbstractAnimation setCallback( final AnimationCallback callback) {
@@ -51,10 +42,5 @@ public abstract class AbstractAnimation<S> implements Animation<S> {
     public long getDuration() {
         return duration;
     }
-
-    public Canvas getCanvas() {
-        return canvas;
-    }
-
 
 }
